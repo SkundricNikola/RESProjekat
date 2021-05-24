@@ -49,5 +49,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataBasePackages\DataBasePackages.csproj">
+      <Project>{ef51ef84-fe1c-45bf-910f-852deb25cc25}</Project>
+      <Name>DataBasePackages</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
