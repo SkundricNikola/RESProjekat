@@ -8,5 +8,10 @@ namespace CalculationFunctions
 {
     class MaximumFunction
     {
+        static void Main(string[] args)
+        {
+
+        }
+
     }
 }

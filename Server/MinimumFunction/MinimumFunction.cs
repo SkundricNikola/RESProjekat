@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CalculationFunctions
+namespace MinimumFunction
 {
-    class CalculationFunctionHandler
+    class MinimumFunction
     {
         static void Main(string[] args)
         {
-
         }
     }
 }
