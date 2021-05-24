@@ -10,6 +10,8 @@ namespace ResidentExecutor
     {
         static void Main(string[] args)
         {
+
         }
+
     }
 }
