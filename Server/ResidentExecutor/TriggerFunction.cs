@@ -13,17 +13,12 @@ namespace ResidentExecutor
         {
 
         }
-        public void SendTriggerFunction(NetworkStream ns, bool isactive)
+        public void SendTriggerFunction(NetworkStream ns,string code)
         {
-            Byte[] data = System.Text.Encoding.ASCII.GetBytes("+");
-            if (isactive == true)
-            {
-                ns.Write(data,0,data.Length);
-            }
-            else
-            {
-                return;
-            }
+            Byte[] data = System.Text.Encoding.ASCII.GetBytes(string.Format("{0}",code));
+            
+            ns.Write(data,0,data.Length);
+            
         }
     }
 }
