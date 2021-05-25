@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+    <time>10</time>
+    <function id="1">min</function>
+    <function id="2">max</function>
+    <function id="3">average</function>
+</configuration>
