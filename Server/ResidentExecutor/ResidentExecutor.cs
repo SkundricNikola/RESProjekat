@@ -18,26 +18,23 @@ namespace ResidentExecutor
             TimeSpan triggerTime = new TimeSpan(0, 0, 10);
             TcpClient clientCalc = new TcpClient("127.0.0.1", 10003);
             NetworkStream streamCalc = clientCalc.GetStream();
-            bool sendminimum;
-            bool sendaverage;
-            bool sendmaximum;
             //TREBA IMPLEMENTIRATI LOGIKU ZA MENJANJE OVIH PARAMETARA, ZAKOMENTARISATI/OBRISATI DODELU NAKON STO SE ZAVRSI
-            sendmaximum = true;
+            Queue<string> funkcije = new Queue<string>();
+            string str = "";
             while(true)
             {
+                if(funkcije.Count == 0)
+                {
+                    //citanje iz xml datoteke Res_Exe i dodavanje indentifikatora u queue funkcije i triggerTime staviri na procitanu vrednost
+                }
+
+                str = funkcije.Dequeue();
+
+                tf.SendTriggerFunction(streamCalc, str);
 
                 Thread.Sleep(triggerTime);
-                //SEND TRIGGER FUNCTION;
-                //USLOVI ZA POKRETANJE SU ZAKOMENTARISANI DOK SE NE SREDI LOGIKA
-                //if () {
-                    tf.SendTriggerFunction(streamCalc, sendminimum);
-                //}
-                //if () {
-                    tf.SendTriggerFunction(streamCalc, sendaverage);
-                //} 
-                //if () {
-                    tf.SendTriggerFunction(streamCalc, sendmaximum);
-                //} 
+
+                
             }
             streamCalc.Close();
             clientCalc.Close();
