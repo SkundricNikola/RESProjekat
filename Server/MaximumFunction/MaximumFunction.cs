@@ -6,15 +6,15 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MinimumFunction
+namespace MaximumFunction
 {
-    class MinimumFunction
+    class MaximumFunction
     {
         static void Main(string[] args)
         {
-            MinimumFunctionCalculation mfc = new MinimumFunctionCalculation();
+            MaximumFunctionCalculation mfc = new MaximumFunctionCalculation();
             TcpListener server = null;
-            Int32 port = 10001;
+            Int32 port = 10003;
             IPAddress localAddr = IPAddress.Parse("127.0.0.1");
             try
             {
@@ -42,6 +42,7 @@ namespace MinimumFunction
                         data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
                         Console.WriteLine("Received: {0}", data);
                         mfc.DoTheCalculation();
+                        
                     }
                     // Shutdown and end connection
                     client.Close();
@@ -60,5 +61,6 @@ namespace MinimumFunction
             Console.WriteLine("\nHit enter to continue...");
             Console.Read();
         }
+
     }
 }
