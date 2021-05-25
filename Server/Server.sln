@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30907.101
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResidentExecutor", "ResidentExecutor\ResidentExecutor.csproj", "{021555AD-D9E1-4E22-AFA5-C2600A3C3BB0}"
 EndProject
@@ -11,13 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBase", "DataBase\DataBase.csproj", "{3BAF5B2B-1300-444F-B099-145205E5C2CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AverageFunction", "AverageFunction\AverageFunction.csproj", "{2ED64009-4125-4573-A5EE-D272777ADDE5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimumFunction", "MinimumFunction\MinimumFunction.csproj", "{4DB1B376-836E-47BE-958A-7CE906AC4380}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBasePackages", "DataBasePackages\DataBasePackages.csproj", "{EF51EF84-FE1C-45BF-910F-852DEB25CC25}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaximumFunction", "MaximumFunction\MaximumFunction.csproj", "{07E4A5B5-2F00-4900-8A7C-1C3D95F1E0AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,22 +35,10 @@ Global
 		{3BAF5B2B-1300-444F-B099-145205E5C2CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BAF5B2B-1300-444F-B099-145205E5C2CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BAF5B2B-1300-444F-B099-145205E5C2CC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2ED64009-4125-4573-A5EE-D272777ADDE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2ED64009-4125-4573-A5EE-D272777ADDE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2ED64009-4125-4573-A5EE-D272777ADDE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2ED64009-4125-4573-A5EE-D272777ADDE5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4DB1B376-836E-47BE-958A-7CE906AC4380}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4DB1B376-836E-47BE-958A-7CE906AC4380}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4DB1B376-836E-47BE-958A-7CE906AC4380}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4DB1B376-836E-47BE-958A-7CE906AC4380}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EF51EF84-FE1C-45BF-910F-852DEB25CC25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EF51EF84-FE1C-45BF-910F-852DEB25CC25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF51EF84-FE1C-45BF-910F-852DEB25CC25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF51EF84-FE1C-45BF-910F-852DEB25CC25}.Release|Any CPU.Build.0 = Release|Any CPU
-		{07E4A5B5-2F00-4900-8A7C-1C3D95F1E0AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{07E4A5B5-2F00-4900-8A7C-1C3D95F1E0AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{07E4A5B5-2F00-4900-8A7C-1C3D95F1E0AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{07E4A5B5-2F00-4900-8A7C-1C3D95F1E0AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
