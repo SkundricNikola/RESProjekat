@@ -72,8 +72,8 @@ namespace DataAccess
                         }
  
                         // Send back a response.
- //                       stream.Write(msg, 0, msg.Length);
- //                       Console.WriteLine("Sent: {0}", data);
+                        //stream.Write(msg, 0, msg.Length);
+                        //Console.WriteLine("Sent: {0}", data);
                     }
 
                     // Shutdown and end connection
