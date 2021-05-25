@@ -16,18 +16,12 @@ namespace ResidentExecutor
             //TRENUTNO JE VREME POZIVANJA ZAKUCANO
             TriggerFunction tf = new TriggerFunction();
             TimeSpan triggerTime = new TimeSpan(0, 0, 10);
-            TcpClient clientMinimum = new TcpClient("127.0.0.1", 10001);
-            TcpClient clientAverage = new TcpClient("127.0.0.1", 10002);
-            TcpClient clientMaximum = new TcpClient("127.0.0.1", 10003);
-            NetworkStream streamMinimum = clientMinimum.GetStream();
-            NetworkStream streamAverage = clientAverage.GetStream();
-            NetworkStream streamMaximum = clientMaximum.GetStream();
+            TcpClient clientCalc = new TcpClient("127.0.0.1", 10003);
+            NetworkStream streamCalc = clientCalc.GetStream();
             bool sendminimum;
             bool sendaverage;
             bool sendmaximum;
             //TREBA IMPLEMENTIRATI LOGIKU ZA MENJANJE OVIH PARAMETARA, ZAKOMENTARISATI/OBRISATI DODELU NAKON STO SE ZAVRSI
-            sendminimum = true;
-            sendaverage = true;
             sendmaximum = true;
             while(true)
             {
@@ -44,12 +38,8 @@ namespace ResidentExecutor
                     tf.SendTriggerFunction(streamMaximum, sendmaximum);
                 //} 
             }
-            streamMinimum.Close();
-            streamAverage.Close();
-            streamMaximum.Close();
-            clientMinimum.Close();
-            clientAverage.Close();
-            clientMaximum.Close();
+            streamCalc.Close();
+            clientCalc.Close();
         }
     }
 }
