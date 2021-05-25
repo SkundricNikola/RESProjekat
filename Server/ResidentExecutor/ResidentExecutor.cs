@@ -25,17 +25,18 @@ namespace ResidentExecutor
             sendmaximum = true;
             while(true)
             {
+
                 Thread.Sleep(triggerTime);
                 //SEND TRIGGER FUNCTION;
                 //USLOVI ZA POKRETANJE SU ZAKOMENTARISANI DOK SE NE SREDI LOGIKA
                 //if () {
-                    tf.SendTriggerFunction(streamMinimum, sendminimum);
+                    tf.SendTriggerFunction(streamCalc, sendminimum);
                 //}
                 //if () {
-                    tf.SendTriggerFunction(streamAverage, sendaverage);
+                    tf.SendTriggerFunction(streamCalc, sendaverage);
                 //} 
                 //if () {
-                    tf.SendTriggerFunction(streamMaximum, sendmaximum);
+                    tf.SendTriggerFunction(streamCalc, sendmaximum);
                 //} 
             }
             streamCalc.Close();
