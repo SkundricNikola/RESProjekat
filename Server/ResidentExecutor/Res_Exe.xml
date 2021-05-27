@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<configuration>
-    <time>10</time>
-    <functions>
-      <prva>min</prva>
-      <druga>max</druga>
-      <treca>average</treca>
-    </functions>
-</configuration>
+<resident_info>
+  <time>10</time>
+  <functions>
+    <prva>min</prva>
+    <druga>max</druga>
+    <treca>average</treca>
+  </functions>
+</resident_info>
