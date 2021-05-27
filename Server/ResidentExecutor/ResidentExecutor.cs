@@ -37,11 +37,11 @@ namespace ResidentExecutor
                     XmlDocument doc = new XmlDocument();
                     doc.Load(fullPath);
 
-                    XmlNode node = doc.DocumentElement.SelectSingleNode("/time");
+                    XmlNode node = doc.DocumentElement.SelectSingleNode("/resident_info/time");
                     Int32.TryParse(node.InnerText, out vreme);
                     triggerTime = new TimeSpan(0, 0, vreme);
 
-                    node = doc.DocumentElement.SelectSingleNode("/functions");
+                    node = doc.DocumentElement.SelectSingleNode("/resident_info/functions");
                     foreach(XmlNode nod in doc.DocumentElement.ChildNodes)
                     {
                         funkcije.Enqueue(nod.InnerText);
