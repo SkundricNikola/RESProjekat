@@ -52,9 +52,9 @@ namespace ResidentExecutor
 
                 tf.SendTriggerFunction(streamCalc, str);
 
-                Thread.Sleep(triggerTime);
-
                 //Verovatno treba dodati neku vrstu ACK potvrde od Calculation Handlera
+                Thread.Sleep(triggerTime);
+                
             }
             streamCalc.Close();
             clientCalc.Close();
