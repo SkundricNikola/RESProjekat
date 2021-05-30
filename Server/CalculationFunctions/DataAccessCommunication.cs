@@ -55,8 +55,6 @@ namespace CalculationFunctions
             }
             ns.Close();
             client.Close();
-            Console.WriteLine("\n Press Enter to continue...");
-            Console.Read();
         }
 
     }

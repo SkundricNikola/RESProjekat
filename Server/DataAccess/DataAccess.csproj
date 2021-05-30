@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="CalculationHandlerCommunication.cs" />
     <Compile Include="DataAccess.cs" />
+    <Compile Include="DataBaseCommunication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

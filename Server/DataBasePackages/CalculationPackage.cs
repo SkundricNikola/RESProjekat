@@ -24,6 +24,16 @@ namespace DataBasePackages
             set { rezultat = value; }
         }
 
+        public CalculationPackage()
+        {
+            vremeProracuna = new DateTime();
+        }
+
+        public CalculationPackage(DateTime datum, double vrednost)
+        {
+            vremeProracuna = new DateTime(datum.Year,datum.Month,datum.Day,datum.Hour,datum.Minute,datum.Second);
+            rezultat = vrednost;
+        }
         public override string ToString()
         {
             string str = string.Format("{0}/{1}/{2}/{3}/{4}/{5}-{6}",

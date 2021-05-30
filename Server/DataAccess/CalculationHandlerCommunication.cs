@@ -67,8 +67,6 @@ namespace DataAccess
                 // Stop listening for new clients.
                 clh.Stop();
             }
-            Console.WriteLine("\nHit enter to continue...");
-            Console.Read();
         }
     }
 }

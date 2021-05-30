@@ -24,7 +24,14 @@ namespace DataAccess
             th1.IsBackground = true;
             th1.Start();
 
-
+            /*--------------------------------------------------------------------------------------------------------------------------
+             * KOMUNIKACIJA DATA ACCESS KOMPONENTE SA BAZOM PODATAKA, UBACITI GDE TREBA
+             -------------------------------------------------------------------------------------------------------------------------*/
+            /*
+            var th2 = new Thread(() => DataBaseCommunication.AskForList(*DATUM ZA KOJI SE TRAZI *,*REFERENCA LISTE U KOJU DA VRATI PODATKE*));
+            th2.IsBackground = true;
+            th2.Start();
+            */
 
             /*--------------------------------------------------------------------------------------------------------------------------
              * KOMUNIKACIJA DATA ACCESS KOMPONENTE SA KLIJENTOM
