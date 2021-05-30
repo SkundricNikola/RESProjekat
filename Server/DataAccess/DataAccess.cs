@@ -5,6 +5,8 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
+using DataBasePackages;
 
 namespace DataAccess
 {
@@ -12,11 +14,28 @@ namespace DataAccess
     { 
         static void Main(string[] args)
         {
+            /*---------------------------------------------------------------------------------------------------------------------------
+             * KOMUNIKACIJA DATA ACCESS KOMPONENTE SA CALCULATION HANDLER KOMPONENTOM
+             *--------------------------------------------------------------------------------------------------------------------------*/
+
+            CalculationHandlerCommunication clh = new CalculationHandlerCommunication();
+            List<CalculationPackage> cp = new List<CalculationPackage>();
+            var th1 = new Thread(() => CalculationHandlerCommunication.ReceiveMessage());
+            th1.IsBackground = true;
+            th1.Start();
+
+
+
+            /*--------------------------------------------------------------------------------------------------------------------------
+             * KOMUNIKACIJA DATA ACCESS KOMPONENTE SA KLIJENTOM
+            *-------------------------------------------------------------------------------------------------------------------------*/
+
             DateTime datumuporuci;
             int sekunde = 0, minuti = 0, sati = 0, dani = 0, meseci = 0, godine = 0;
             string region = "";
             int vrstaporuke;
             double vrednostpotrosnje;
+            ClientPackage clientPackage = new ClientPackage();
             TcpListener server = null;
             try
             {
