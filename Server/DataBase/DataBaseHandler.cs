@@ -13,5 +13,24 @@ namespace DataBase
 
         }
 
+        void CreateNewDataBaseElement(string format, int code)
+        {
+
+        }
+
+        void UpdateDataBaseElement(string format, int code)
+        {
+
+        }
+
+        void ReadDataBaseElement(string format, int code)
+        {
+
+        }
+
+        void DeleteDataBaseElement(string format, int code)
+        {
+
+        }
     }
 }
