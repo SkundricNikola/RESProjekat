@@ -22,12 +22,8 @@ namespace ResidentExecutor
             TimeSpan triggerTime = new TimeSpan();
             //TREBA IMPLEMENTIRATI LOGIKU ZA MENJANJE OVIH PARAMETARA, ZAKOMENTARISATI/OBRISATI DODELU NAKON STO SE ZAVRSI
             Queue<string> funkcije = new Queue<string>();
-            string fileName = "Res_Exe.xml";
-            string fullPath;
             string str = "";
             int vreme;
-
-            fullPath = Path.GetFullPath(fileName);
             
             while(true)
             {
@@ -35,14 +31,14 @@ namespace ResidentExecutor
                 {
                     //citanje iz xml datoteke Res_Exe i dodavanje indentifikatora u queue funkcije i triggerTime staviri na procitanu vrednost
                     XmlDocument doc = new XmlDocument();
-                    doc.Load(fullPath);
+                    doc.Load("F:\\RESProjekat\\Server\\ResidentExecutor\\Res_Exe.xml");
 
                     XmlNode node = doc.DocumentElement.SelectSingleNode("/resident_info/time");
                     Int32.TryParse(node.InnerText, out vreme);
                     triggerTime = new TimeSpan(0, 0, vreme);
 
                     node = doc.DocumentElement.SelectSingleNode("/resident_info/functions");
-                    foreach(XmlNode nod in doc.DocumentElement.ChildNodes)
+                    foreach(XmlNode nod in node.ChildNodes)
                     {
                         funkcije.Enqueue(nod.InnerText);
                     }
@@ -50,7 +46,7 @@ namespace ResidentExecutor
 
                 str = funkcije.Dequeue();
 
-                tf.SendTriggerFunction(streamCalc, str);
+                //tf.SendTriggerFunction(streamCalc, str);
 
                 //Verovatno treba dodati neku vrstu ACK potvrde od Calculation Handlera
                 Thread.Sleep(triggerTime);
