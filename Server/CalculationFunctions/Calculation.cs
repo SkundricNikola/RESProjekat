@@ -5,12 +5,24 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CalculationFunctions
 {
     class Calculation
     {
+        public List<CalculationPackage> RetrieveCalculations()
+        {
+            List<CalculationPackage> kalkulacije = new List<CalculationPackage>();
+            Int32 portDataAccess = 10010;
+            DataAccessCommunication dac = new DataAccessCommunication(portDataAccess, IPAddress.Parse("127.0.0.1"));
+            DateTime datum = new DateTime();
+            var th1 = new Thread(() => DataAccessCommunication.SendMessage(ref kalkulacije, datum));
+            th1.IsBackground = true;
+            th1.Start();
+            return kalkulacije;
+        }
         static void Main(string[] args)
         {
             TcpListener server = null;
