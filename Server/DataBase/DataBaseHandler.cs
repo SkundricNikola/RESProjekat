@@ -13,12 +13,12 @@ namespace DataBase
 
         }
 
-        void CreateNewDataBaseElement(string format, int code)
+        void CreateNewDataBaseElement(string format)
         {
 
         }
 
-        void UpdateDataBaseElement(string format, int code)
+        void UpdateDataBaseElement(string format, int id)
         {
 
         }
