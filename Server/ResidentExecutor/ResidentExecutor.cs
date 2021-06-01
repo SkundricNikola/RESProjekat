@@ -31,7 +31,7 @@ namespace ResidentExecutor
                 {
                     //citanje iz xml datoteke Res_Exe i dodavanje indentifikatora u queue funkcije i triggerTime staviri na procitanu vrednost
                     XmlDocument doc = new XmlDocument();
-                    doc.Load("F:\\RESProjekat\\Server\\ResidentExecutor\\Res_Exe.xml");
+                    doc.Load("Res_Exe.xml");
 
                     XmlNode node = doc.DocumentElement.SelectSingleNode("/resident_info/time");
                     Int32.TryParse(node.InnerText, out vreme);
@@ -46,7 +46,7 @@ namespace ResidentExecutor
 
                 str = funkcije.Dequeue();
 
-                //tf.SendTriggerFunction(streamCalc, str);
+                tf.SendTriggerFunction(streamCalc, str);
 
                 //Verovatno treba dodati neku vrstu ACK potvrde od Calculation Handlera
                 Thread.Sleep(triggerTime);
