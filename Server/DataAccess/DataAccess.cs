@@ -90,13 +90,14 @@ namespace DataAccess
                             datumuporuci = new DateTime(godine, meseci, dani, sati, minuti, sekunde);
                             vrednostpotrosnje = Double.Parse(parametri[3]);
                             //PUNJENJE IZVUCENIH PODATAKA U FORMU
-                            RespondToMessageOne();
+                            RespondToMessageOne(stream);
                         }
                         else
                         {
-                            RespondToMessageTwo();
+                            RespondToMessageTwo(stream);
                         }
- 
+
+                        
                         // Send back a response.
                         //stream.Write(msg, 0, msg.Length);
                         //Console.WriteLine("Sent: {0}", data);
@@ -120,16 +121,18 @@ namespace DataAccess
             Console.Read();
         }
 
-        private static void RespondToMessageTwo()
+        private static void RespondToMessageTwo(NetworkStream stream)
         {
-            //TO DO
-            throw new NotImplementedException();
+            string povratna_ack = "primljeni podatci";
+            Byte[] poruka = System.Text.Encoding.ASCII.GetBytes(povratna_ack);
+            stream.Write(poruka, 0, poruka.Length);
         }
 
-        private static void RespondToMessageOne()
+        private static void RespondToMessageOne(NetworkStream stream)
         {
-            //TO DO
-            throw new NotImplementedException();
+            string povratna_ack = "primljeni podatci";
+            Byte[] poruka = System.Text.Encoding.ASCII.GetBytes(povratna_ack);
+            stream.Write(poruka, 0, poruka.Length);
         }
     }
 }
