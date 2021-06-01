@@ -44,5 +44,7 @@ namespace DataBasePackages
             return str;
 
         }
+
+        public void FromString(string s) { }
     }
 }
