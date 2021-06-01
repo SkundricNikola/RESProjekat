@@ -27,7 +27,7 @@ namespace CalculationFunctions
 
         public static string ResponseData { get => responseData; set => responseData = value; }
 
-        public static void SendMessage(ref List<CalculationPackage> compack,DateTime dat)
+        public static void SendMessage(ref List<ClientPackage> compack,DateTime dat)
         {
             IPEndPoint iPEndPoint = new IPEndPoint(iPAddress, port);
             TcpClient client = new TcpClient(iPEndPoint);
@@ -49,7 +49,7 @@ namespace CalculationFunctions
             string[] temps = poruka2.Split(';');
             foreach(string s in temps)
             {
-                CalculationPackage calc = new CalculationPackage();
+                ClientPackage calc = new ClientPackage();
                 calc.FromString(s);
                 compack.Add(calc);
             }
