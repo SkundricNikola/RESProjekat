@@ -94,9 +94,9 @@ namespace DataAccess
                         }
                         else
                         {
+                            //TO DO Prociati iz baze unose i poslati RespondToMessageTwo
                             RespondToMessageTwo(stream);
                         }
-
                         
                         // Send back a response.
                         //stream.Write(msg, 0, msg.Length);
@@ -123,6 +123,7 @@ namespace DataAccess
 
         private static void RespondToMessageTwo(NetworkStream stream)
         {
+            //TO DO formatiran odgovor tabele ispisa
             string povratna_ack = "primljeni podatci";
             Byte[] poruka = System.Text.Encoding.ASCII.GetBytes(povratna_ack);
             stream.Write(poruka, 0, poruka.Length);
@@ -130,7 +131,7 @@ namespace DataAccess
 
         private static void RespondToMessageOne(NetworkStream stream)
         {
-            string povratna_ack = "primljeni podatci";
+            string povratna_ack = "Data Access je primio unos";
             Byte[] poruka = System.Text.Encoding.ASCII.GetBytes(povratna_ack);
             stream.Write(poruka, 0, poruka.Length);
         }
