@@ -12,8 +12,8 @@ namespace DataBase
 {
     class DataAccessCommunication
     {
-        public XmlDocument doc;
-        XmlTextWriter xtw;
+        private XmlDocument doc;
+        private XmlTextWriter xtw;
 
         private static TcpListener dac;
         public DataAccessCommunication()
@@ -21,7 +21,7 @@ namespace DataBase
             doc = new XmlDocument();
             xtw = new XmlTextWriter("DataBase", Encoding.UTF8);
             xtw.WriteStartDocument();
-            xtw.WriteStartElement("CustomerDetails");
+            xtw.WriteStartElement("Data");
             xtw.WriteEndElement();
             xtw.Close();
         }
@@ -88,9 +88,9 @@ namespace DataBase
         {
             FileStream lfile = new FileStream("DataBase", FileMode.Open);
             doc.Load(lfile);
-            XmlElement cl = doc.CreateElement("Customer");
-            cl.SetAttribute("Name", "abc");
-            XmlElement na = doc.CreateElement("Address");
+            XmlElement cl = doc.CreateElement("Unos");
+            cl.SetAttribute("Date", "abc");
+            XmlElement na = doc.CreateElement("Forma");
             XmlText natext = doc.CreateTextNode("xyz,india");
             na.AppendChild(natext);
             cl.AppendChild(na);
@@ -103,14 +103,14 @@ namespace DataBase
         {
             FileStream up = new FileStream("DataBase", FileMode.Open);
             doc.Load(up);
-            XmlNodeList list = doc.GetElementsByTagName("Customer");
+            XmlNodeList list = doc.GetElementsByTagName("Unos");
             for (int i = 0; i < list.Count; i++)
             {
-                XmlElement cu = (XmlElement)doc.GetElementsByTagName("Customer")[i];
-                XmlElement add = (XmlElement)doc.GetElementsByTagName("Address")[i];
-                if (cu.GetAttribute("Name") == "abc")
+                XmlElement cu = (XmlElement)doc.GetElementsByTagName("Unos")[i];
+                XmlElement add = (XmlElement)doc.GetElementsByTagName("Forma")[i];
+                if (cu.GetAttribute("Date") == "abc")
                 {
-                    cu.SetAttribute("Name", "efgh");
+                    cu.SetAttribute("Date", "efgh");
                     add.InnerText = "pqrs,india";
                     break;
                 }
@@ -124,12 +124,12 @@ namespace DataBase
             FileStream rfile = new FileStream("DataBase", FileMode.Open);
             doc.Load(rfile);
             string address = "";
-            XmlNodeList list = doc.GetElementsByTagName("Customer");
+            XmlNodeList list = doc.GetElementsByTagName("Unos");
             for (int i = 0; i < list.Count; i++)
             {
-                XmlElement cl = (XmlElement)doc.GetElementsByTagName("Customer")[i];
-                XmlElement add = (XmlElement)doc.GetElementsByTagName("Address")[i];
-                if (cl.GetAttribute("Name") == "abc")
+                XmlElement cl = (XmlElement)doc.GetElementsByTagName("Unos")[i];
+                XmlElement add = (XmlElement)doc.GetElementsByTagName("Forma")[i];
+                if (cl.GetAttribute("Date") == "abc")
                 {
                     address = add.InnerText;
                     break;
@@ -143,11 +143,11 @@ namespace DataBase
         {
             FileStream rfile = new FileStream("DataBase", FileMode.Open);
             doc.Load(rfile);
-            XmlNodeList list = doc.GetElementsByTagName("Customer");
+            XmlNodeList list = doc.GetElementsByTagName("Unos");
             for (int i = 0; i < list.Count; i++)
             {
-                XmlElement cl = (XmlElement)doc.GetElementsByTagName("Customer")[i];
-                if (cl.GetAttribute("Name") == "efgh")
+                XmlElement cl = (XmlElement)doc.GetElementsByTagName("Unos")[i];
+                if (cl.GetAttribute("Date") == "efgh")
                 {
                     doc.DocumentElement.RemoveChild(cl);
                 }
