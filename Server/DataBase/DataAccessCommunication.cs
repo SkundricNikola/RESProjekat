@@ -67,7 +67,7 @@ namespace DataBase
                             datumprovere = new DateTime(godina, mesec, dan, sat, minut, sekund);
                             /*----------------------------------------------------------
                              * LOGIKA ZA DOBAVLJANJE LISTE, DODATI KAD SE FUNKCIJA ZA CITANJE IZ BAZE IMPLEMENTIRA
-                             * TRENUTNO SLEDECA STRANA OCEKUJE ODGOVOR U FORMATU godina/mesec/dan/sat/minut/sekund/rezultat;godina/mesec.....
+                             * TRENUTNO SLEDECA STRANA OCEKUJE ODGOVOR U FORMATU godina/mesec/dan/sat/minut/sekund/rezultat/vrstaproracuna;godina/mesec.....
                              * UKOLIKO SE PROMENI FORMAT LISTE, POTREBNO JE PROMENITI I PARSIRANJE SA DRUGE STRANE
                              ---------------------------------------------------------------------------*/
                             stream.Write(bytes, 0, bytes.Length);

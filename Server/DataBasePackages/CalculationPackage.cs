@@ -6,12 +6,19 @@ using System.Threading.Tasks;
 
 namespace DataBasePackages
 {//Klasa CalculationPackage sluzi za cuvanje rezultata tj. kao format za cuvanje rezultata operacija kalkulacije
+    public enum VrstaProracuna
+    {
+        MINIMALNI,
+        PROSECNI,
+        MAKSIMALNI,
+        NEODREDJENI
+    };
     public class CalculationPackage
     {
         private DateTime vremeProracuna;
         //private DateTime posVreme; dok nam jos nije jasno kako da se ovo koristi nek ostane ovako
         private double rezultat;
-
+        VrstaProracuna vrstaProracuna;
         public DateTime VremeProracuna
         {
             get { return vremeProracuna; }
@@ -29,10 +36,11 @@ namespace DataBasePackages
             vremeProracuna = new DateTime();
         }
 
-        public CalculationPackage(DateTime datum, double vrednost)
+        public CalculationPackage(DateTime datum, double vrednost,VrstaProracuna vrsta)
         {
             vremeProracuna = new DateTime(datum.Year,datum.Month,datum.Day,datum.Hour,datum.Minute,datum.Second);
             rezultat = vrednost;
+            vrstaProracuna = vrsta;
         }
         public override string ToString()
         {

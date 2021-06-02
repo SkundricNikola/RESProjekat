@@ -58,6 +58,7 @@ namespace DataAccess
             {
                 int godina, mesec, dan, sat, minut, sekund;
                 double vrednost;
+                VrstaProracuna vp = new VrstaProracuna();
                 string[] podaci = s.Split('/');
                 Int32.TryParse(podaci[0], out godina);
                 Int32.TryParse(podaci[1], out mesec);
@@ -66,8 +67,21 @@ namespace DataAccess
                 Int32.TryParse(podaci[4], out minut);
                 Int32.TryParse(podaci[5], out sekund);
                 Double.TryParse(podaci[6], out vrednost);
+                if(podaci[7] == "MINIMALNI")
+                {
+                    vp = VrstaProracuna.MINIMALNI;
+                }
+                else if(podaci[7] == "PROSECNI")
+                {
+                    vp = VrstaProracuna.PROSECNI;
+                }
+                else if(podaci[7] == "MAKSIMALNI")
+                {
+                    vp = VrstaProracuna.MAKSIMALNI;
+                }
+                else { vp = VrstaProracuna.NEODREDJENI; }
                 DateTime tempdatum = new DateTime(godina, mesec, dan, sat, minut, sekund);
-                CalculationPackage cp = new CalculationPackage(tempdatum,vrednost);
+                CalculationPackage cp = new CalculationPackage(tempdatum,vrednost,vp);
                 lista.Add(cp);
             }
             ns.Close();
