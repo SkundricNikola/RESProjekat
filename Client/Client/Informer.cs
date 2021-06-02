@@ -133,5 +133,33 @@ namespace Client
             }
             return poruka;
         }
+        public void PrintList(string lista)
+        {
+            Console.WriteLine("---------------------------------------------------------------------");
+            Console.WriteLine("DATUM\tVREDNOST PRORACUNA\tVRSTA PRORACUNA");
+            Console.WriteLine("---------------------------------------------------------------------");
+            string[] objekti = lista.Split(';');
+            // SEKUND/MINUT/SAT/DAN/MESEC/GODINA-REZULTAT-VRSTA
+            //{0}/{1}/{2}/{3}/{4}/{5}-{6}-{7}
+            foreach (var objekat in objekti)
+            {
+                string[] delovi = objekat.Split('/');
+                int sekund = 0, minut = 0, sat = 0, dan = 0, mesec = 0, godina = 0;
+                double rezultat = 0.0;
+                string priprema = "";
+                Int32.TryParse(delovi[0], out sekund);
+                Int32.TryParse(delovi[1], out minut);
+                Int32.TryParse(delovi[2], out sat);
+                Int32.TryParse(delovi[3], out dan);
+                Int32.TryParse(delovi[4], out mesec);
+                string[] delovi2 = delovi[5].Split('-');
+                Int32.TryParse(delovi2[0], out godina);
+                Double.TryParse(delovi2[1], out rezultat);
+                DateTime vreme = new DateTime(godina,mesec,dan,sat,minut,sekund);
+                priprema += vreme.ToString() + "\t" + rezultat.ToString() + "\t" + delovi2[2];
+                Console.WriteLine(priprema);
+            }
+            Console.WriteLine("---------------------------------------------------------------------");
+        }
     }
 }

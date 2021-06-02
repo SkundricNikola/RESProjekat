@@ -50,12 +50,7 @@ namespace Client
                 }
                 else 
                 {
-                    string[] odgovor = responseData.Split(';');
-                    Console.WriteLine("---------------------------------------------------------------------");
-                    Console.WriteLine("");
-                    Console.WriteLine("---------------------------------------------------------------------");
-
-                    Console.WriteLine("---------------------------------------------------------------------");
+                    i.PrintList(responseData);
                 }
             }
             stream.Close();

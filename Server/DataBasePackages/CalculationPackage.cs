@@ -44,7 +44,21 @@ namespace DataBasePackages
         }
         public override string ToString()
         {
-            string str = string.Format("{0}/{1}/{2}/{3}/{4}/{5}-{6}",
+            string stringvrsta = "";
+            if(vrstaProracuna == VrstaProracuna.MAKSIMALNI)
+            {
+                stringvrsta = "MAKSIMALNI";
+            }
+            else if(vrstaProracuna == VrstaProracuna.PROSECNI)
+            {
+                stringvrsta = "PROSECNI";
+            }
+            else if (vrstaProracuna == VrstaProracuna.MINIMALNI)
+            {
+                stringvrsta = "MINIMALNI";
+            }
+            else { stringvrsta = "NEODREDJENI"; }
+            string str = string.Format("{0}/{1}/{2}/{3}/{4}/{5}-{6}-",
                 vremeProracuna.Second,
                 vremeProracuna.Minute,
                 vremeProracuna.Hour,
@@ -52,10 +66,12 @@ namespace DataBasePackages
                 vremeProracuna.Month,
                 vremeProracuna.Year,
                 rezultat);
+            str += stringvrsta;
             return str;
         }
         public void FromString(string s)
         {
+            VrstaProracuna vp = new VrstaProracuna();
             double rez;
             string[] parseddata = s.Split('/');
             int sekund = 0, minut = 0, sat = 0, dan = 0, mesec = 0, godina = 0;
@@ -67,6 +83,19 @@ namespace DataBasePackages
             string[] secondparse = parseddata[5].Split('-');
             Int32.TryParse(secondparse[0], out godina);
             Double.TryParse(secondparse[1], out rez);
+            if(secondparse[2] == "MINIMALNI")
+            {
+                vp = VrstaProracuna.MINIMALNI;
+            }
+            if (secondparse[2] == "MAKSIMALNI")
+            {
+                vp = VrstaProracuna.MAKSIMALNI;
+            }
+            if (secondparse[2] == "PROSECNI")
+            {
+                vp = VrstaProracuna.PROSECNI;
+            }
+
             DateTime vreme = new DateTime(godina, mesec, dan, sat, minut, sekund);
             vremeProracuna = vreme;
             rezultat = rez;

@@ -78,6 +78,9 @@ namespace DataAccess
                         {
                             continue;
                         }
+                        //--------------------------------------------------------
+                        //VRSTA PORUKE KADA KORISNIK DODAJE OBJEKAT U BAZU PDATAKA
+                        //--------------------------------------------------------
                         else if(vrstaporuke == 1)
                         {
                             region = parametri[1];
@@ -108,6 +111,9 @@ namespace DataAccess
                                 stream.Write(bytes, 0, bytes.Length);
                             }
                          }
+                        //--------------------------------------------------------
+                        //VRSTA PORUKE KADA KORISNIK TRAZI LISTU PODATAKA IZ BAZE
+                        //--------------------------------------------------------
                         else
                         {
 
