@@ -5,15 +5,25 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.IO;
 
 namespace DataBase
 {
     class DataAccessCommunication
     {
+        public XmlDocument doc;
+        XmlTextWriter xtw;
+
         private static TcpListener dac;
         public DataAccessCommunication()
         {
-
+            doc = new XmlDocument();
+            xtw = new XmlTextWriter("DataBase", Encoding.UTF8);
+            xtw.WriteStartDocument();
+            xtw.WriteStartElement("CustomerDetails");
+            xtw.WriteEndElement();
+            xtw.Close();
         }
         public static void ReceiveMessage()
         {
@@ -72,6 +82,78 @@ namespace DataBase
                 // Stop listening for new clients.
                 dac.Stop();
             }
+        }
+
+        public void CreateNewDataBaseElement(string format)
+        {
+            FileStream lfile = new FileStream("DataBase", FileMode.Open);
+            doc.Load(lfile);
+            XmlElement cl = doc.CreateElement("Customer");
+            cl.SetAttribute("Name", "abc");
+            XmlElement na = doc.CreateElement("Address");
+            XmlText natext = doc.CreateTextNode("xyz,india");
+            na.AppendChild(natext);
+            cl.AppendChild(na);
+            doc.DocumentElement.AppendChild(cl);
+            lfile.Close();
+            doc.Save("DataBase");
+        }
+
+        public void UpdateDataBaseElement(string format, int id)
+        {
+            FileStream up = new FileStream("DataBase", FileMode.Open);
+            doc.Load(up);
+            XmlNodeList list = doc.GetElementsByTagName("Customer");
+            for (int i = 0; i < list.Count; i++)
+            {
+                XmlElement cu = (XmlElement)doc.GetElementsByTagName("Customer")[i];
+                XmlElement add = (XmlElement)doc.GetElementsByTagName("Address")[i];
+                if (cu.GetAttribute("Name") == "abc")
+                {
+                    cu.SetAttribute("Name", "efgh");
+                    add.InnerText = "pqrs,india";
+                    break;
+                }
+            }
+            up.Close();
+            doc.Save("DataBase");
+        }
+
+        public string  ReadDataBaseElement(string format, int code)
+        {
+            FileStream rfile = new FileStream("DataBase", FileMode.Open);
+            doc.Load(rfile);
+            string address = "";
+            XmlNodeList list = doc.GetElementsByTagName("Customer");
+            for (int i = 0; i < list.Count; i++)
+            {
+                XmlElement cl = (XmlElement)doc.GetElementsByTagName("Customer")[i];
+                XmlElement add = (XmlElement)doc.GetElementsByTagName("Address")[i];
+                if (cl.GetAttribute("Name") == "abc")
+                {
+                    address = add.InnerText;
+                    break;
+                }
+            }
+            rfile.Close();
+            return address;
+        }
+
+        public void DeleteDataBaseElement(string format, int code)
+        {
+            FileStream rfile = new FileStream("DataBase", FileMode.Open);
+            doc.Load(rfile);
+            XmlNodeList list = doc.GetElementsByTagName("Customer");
+            for (int i = 0; i < list.Count; i++)
+            {
+                XmlElement cl = (XmlElement)doc.GetElementsByTagName("Customer")[i];
+                if (cl.GetAttribute("Name") == "efgh")
+                {
+                    doc.DocumentElement.RemoveChild(cl);
+                }
+            }
+            rfile.Close();
+            doc.Save("DataBase");
         }
     }
 }
