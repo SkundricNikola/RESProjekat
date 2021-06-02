@@ -44,6 +44,7 @@ namespace DataAccess
             double vrednostpotrosnje;
             ClientPackage clientPackage = new ClientPackage();
             TcpListener server = null;
+            List<CalculationPackage> lista;
             try
             {
                 Int32 port = 13000;
@@ -86,21 +87,48 @@ namespace DataAccess
                             Int32.TryParse(datumpodaci[2], out sati);
                             Int32.TryParse(datumpodaci[3], out dani);
                             Int32.TryParse(datumpodaci[4], out meseci);
-                            Int32.TryParse(datumpodaci[0], out godine);
+                            Int32.TryParse(datumpodaci[5], out godine);
                             datumuporuci = new DateTime(godine, meseci, dani, sati, minuti, sekunde);
                             vrednostpotrosnje = Double.Parse(parametri[3]);
                             //PUNJENJE IZVUCENIH PODATAKA U FORMU
-                            RespondToMessageOne(stream);
-                        }
+                            clientPackage.Datum = datumuporuci;
+                            clientPackage.Potrosnja = vrednostpotrosnje;
+                            clientPackage.Region = region;
+                            bool dobar = false;
+                            var porukathread = new Thread(() => DataBaseCommunication.SendInfoToInsert(clientPackage,ref dobar));
+                            porukathread.Start();
+                            if(dobar)
+                            {
+                                bytes = System.Text.Encoding.ASCII.GetBytes("WRITTEN");
+                                stream.Write(bytes, 0,bytes.Length);
+                            }
+                            else 
+                            {
+                                bytes = System.Text.Encoding.ASCII.GetBytes("NOTWRITTEN");
+                                stream.Write(bytes, 0, bytes.Length);
+                            }
+                         }
                         else
                         {
-                            //TO DO Prociati iz baze unose i poslati RespondToMessageTwo
-                            RespondToMessageTwo(stream);
+
+                            string[] datumpodaci = parametri[2].Split('/');
+                            Int32.TryParse(datumpodaci[0], out dani);
+                            Int32.TryParse(datumpodaci[1], out meseci);
+                            Int32.TryParse(datumpodaci[2], out godine);
+                            sekunde = 0;
+                            minuti = 0;
+                            sati = 0;
+                            datumuporuci = new DateTime(godine, meseci, dani, sati, minuti, sekunde);
+                            lista = new List<CalculationPackage>();
+                            var porukathread = new Thread(() => DataBaseCommunication.AskForList(datumuporuci, ref lista));
+                            string odgovorporuka = "";
+                            foreach(var item in lista)
+                            {
+                                odgovorporuka += item.ToString() + ";";
+                            }
+                            bytes = System.Text.Encoding.ASCII.GetBytes(odgovorporuka);
+                            stream.Write(bytes, 0, bytes.Length);
                         }
-                        
-                        // Send back a response.
-                        //stream.Write(msg, 0, msg.Length);
-                        //Console.WriteLine("Sent: {0}", data);
                     }
 
                     // Shutdown and end connection
@@ -121,19 +149,5 @@ namespace DataAccess
             Console.Read();
         }
 
-        private static void RespondToMessageTwo(NetworkStream stream)
-        {
-            //TO DO formatiran odgovor tabele ispisa
-            string povratna_ack = "primljeni podatci";
-            Byte[] poruka = System.Text.Encoding.ASCII.GetBytes(povratna_ack);
-            stream.Write(poruka, 0, poruka.Length);
-        }
-
-        private static void RespondToMessageOne(NetworkStream stream)
-        {
-            string povratna_ack = "Data Access je primio unos";
-            Byte[] poruka = System.Text.Encoding.ASCII.GetBytes(povratna_ack);
-            stream.Write(poruka, 0, poruka.Length);
-        }
     }
 }

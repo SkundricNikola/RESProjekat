@@ -16,14 +16,33 @@ namespace DataAccess
             string formatirano = d.Year + "/" + d.Month + "/" + d.Day + "/" + d.Hour + "/" + d.Minute + "/" + d.Second;
             return formatirano;
         }
-        private static void AskForList(DateTime datum,ref List<CalculationPackage>lista)
+        public static void SendInfoToInsert(ClientPackage cp,ref bool dobar)
+        {
+            string responseData = "";
+            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10011);
+            TcpClient client = new TcpClient(iPEndPoint);
+            NetworkStream ns = client.GetStream();
+
+            string poruka = "1;"+ cp.ToString();
+            Byte[] data = System.Text.Encoding.ASCII.GetBytes(poruka);
+            ns.Write(data, 0, data.Length);
+
+            Int32 bytes = ns.Read(data, 0, data.Length);
+            responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+            if(responseData == "dobar")
+            {
+                dobar = true;
+            }
+            else { dobar = false; }
+        }
+        public static void AskForList(DateTime datum,ref List<CalculationPackage>lista)
         {
             string responseData = "";
             IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10011);
             TcpClient client = new TcpClient(iPEndPoint);
             NetworkStream ns = client.GetStream();
             //FORMATIRATI PORUKU KOJA SE SALJE (poruka)
-            string poruka = FormatirajDatum(datum);
+            string poruka = "2;"+ FormatirajDatum(datum);
             Byte[] data = System.Text.Encoding.ASCII.GetBytes(poruka);
             ns.Write(data, 0, data.Length);
             //-----------------------------------------------

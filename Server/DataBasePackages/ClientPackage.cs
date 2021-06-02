@@ -42,9 +42,23 @@ namespace DataBasePackages
                 region,
                 potrosnja);
             return str;
-
         }
-
-        public void FromString(string s) { }
+        public void FromString(string text)
+        {
+            string[] parsed = text.Split('/');
+            string[] secondparse = parsed[5].Split('-');
+            int godina, mesec, dan, sat, minut, sekund;
+            double ptr;
+            Int32.TryParse(parsed[0], out sekund);
+            Int32.TryParse(parsed[1], out minut);
+            Int32.TryParse(parsed[2], out sat);
+            Int32.TryParse(parsed[3], out dan);
+            Int32.TryParse(parsed[4], out mesec);
+            Int32.TryParse(secondparse[0], out godina);
+            Double.TryParse(secondparse[2], out ptr);
+            datum = new DateTime(godina, mesec, dan, sat, minut, sekund);
+            Potrosnja = ptr;
+            region = secondparse[1];
+        }
     }
 }

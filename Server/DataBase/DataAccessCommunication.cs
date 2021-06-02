@@ -50,22 +50,33 @@ namespace DataBase
                         // Translate data bytes to a ASCII string.
                         data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
                         Console.WriteLine("Received: {0}", data);
-                        //DATA ACCESS PITA ZA LISTU TAKO STO SALJE DATUM
-                        int godina, mesec, dan, sat, minut, sekund;
-                        string[] par = data.Split('/');
-                        Int32.TryParse(par[0],out godina);
-                        Int32.TryParse(par[1],out mesec);
-                        Int32.TryParse(par[2],out dan);
-                        Int32.TryParse(par[3],out sat);
-                        Int32.TryParse(par[4],out minut);
-                        Int32.TryParse(par[5],out sekund);
-                        datumprovere = new DateTime(godina, mesec, dan, sat, minut, sekund);
-                        /*----------------------------------------------------------
-                         * LOGIKA ZA DOBAVLJANJE LISTE, DODATI KAD SE FUNKCIJA ZA CITANJE IZ BAZE IMPLEMENTIRA
-                         * TRENUTNO SLEDECA STRANA OCEKUJE ODGOVOR U FORMATU godina/mesec/dan/sat/minut/sekund/rezultat;godina/mesec.....
-                         * UKOLIKO SE PROMENI FORMAT LISTE, POTREBNO JE PROMENITI I PARSIRANJE SA DRUGE STRANE
-                         ---------------------------------------------------------------------------*/
-                        stream.Write(bytes, 0, bytes.Length);
+                        string[] tip = data.Split(';');
+                        int tipa;
+                        Int32.TryParse(tip[0], out tipa);
+                        if (tipa == 1)
+                        {
+                            //DATA ACCESS PITA ZA LISTU TAKO STO SALJE DATUM
+                            int godina, mesec, dan, sat, minut, sekund;
+                            string[] par = tip[1].Split('/');
+                            Int32.TryParse(par[0], out godina);
+                            Int32.TryParse(par[1], out mesec);
+                            Int32.TryParse(par[2], out dan);
+                            Int32.TryParse(par[3], out sat);
+                            Int32.TryParse(par[4], out minut);
+                            Int32.TryParse(par[5], out sekund);
+                            datumprovere = new DateTime(godina, mesec, dan, sat, minut, sekund);
+                            /*----------------------------------------------------------
+                             * LOGIKA ZA DOBAVLJANJE LISTE, DODATI KAD SE FUNKCIJA ZA CITANJE IZ BAZE IMPLEMENTIRA
+                             * TRENUTNO SLEDECA STRANA OCEKUJE ODGOVOR U FORMATU godina/mesec/dan/sat/minut/sekund/rezultat;godina/mesec.....
+                             * UKOLIKO SE PROMENI FORMAT LISTE, POTREBNO JE PROMENITI I PARSIRANJE SA DRUGE STRANE
+                             ---------------------------------------------------------------------------*/
+                            stream.Write(bytes, 0, bytes.Length);
+                        }
+                        else 
+                        {
+                            bytes = System.Text.Encoding.ASCII.GetBytes("dobar");
+                            stream.Write(bytes, 0,bytes.Length);
+                        }
                     }
                     // Shutdown and end connection
                     client.Close();

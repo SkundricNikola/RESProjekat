@@ -39,6 +39,24 @@ namespace Client
                 // Read the first batch of the TcpServer response bytes.
                 Int32 bytes = stream.Read(data, 0, data.Length);
                 responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                //ODGOVOR NA PRVU PORUKU
+                if(responseData == "WRITTEN")
+                {
+                    i.PrvaPorukaUspesna();
+                }
+                else if(responseData == "NOTWRITTEN")
+                {
+                    i.PrvaPorukaNeuspesna();
+                }
+                else 
+                {
+                    string[] odgovor = responseData.Split(';');
+                    Console.WriteLine("---------------------------------------------------------------------");
+                    Console.WriteLine("");
+                    Console.WriteLine("---------------------------------------------------------------------");
+
+                    Console.WriteLine("---------------------------------------------------------------------");
+                }
             }
             stream.Close();
             client.Close();
