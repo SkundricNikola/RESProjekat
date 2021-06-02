@@ -16,25 +16,5 @@ namespace DataBase
             th1.Start();
 
         }
-
-        void CreateNewDataBaseElement(string format)
-        {
-
-        }
-
-        void UpdateDataBaseElement(string format, int id)
-        {
-
-        }
-
-        void ReadDataBaseElement(string format, int code)
-        {
-
-        }
-
-        void DeleteDataBaseElement(string format, int code)
-        {
-
-        }
     }
 }
