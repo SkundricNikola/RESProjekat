@@ -16,7 +16,7 @@ namespace DataBasePackages
     public class CalculationPackage
     {
         private DateTime vremeProracuna;
-        //private DateTime posVreme; dok nam jos nije jasno kako da se ovo koristi nek ostane ovako
+        private DateTime posVreme;
         private double rezultat;
         VrstaProracuna vrstaProracuna;
         public DateTime VremeProracuna
@@ -29,6 +29,11 @@ namespace DataBasePackages
         {
             get { return rezultat; }
             set { rezultat = value; }
+        }
+        public DateTime PosVreme
+        {
+            get { return posVreme; }
+            set { posVreme = value; }
         }
 
         public CalculationPackage()
@@ -58,13 +63,19 @@ namespace DataBasePackages
                 stringvrsta = "MINIMALNI";
             }
             else { stringvrsta = "NEODREDJENI"; }
-            string str = string.Format("{0}/{1}/{2}/{3}/{4}/{5}-{6}-",
+            string str = string.Format("{0}/{1}/{2}/{3}/{4}/{5}-{6}/{7}/{8}/{9}/{10}/{11}-{12}-",
                 vremeProracuna.Second,
                 vremeProracuna.Minute,
                 vremeProracuna.Hour,
                 vremeProracuna.Day,
                 vremeProracuna.Month,
                 vremeProracuna.Year,
+                posVreme.Second,
+                posVreme.Minute,
+                posVreme.Hour,
+                posVreme.Day,
+                posVreme.Month,
+                posVreme.Year,
                 rezultat);
             str += stringvrsta;
             return str;
@@ -73,32 +84,41 @@ namespace DataBasePackages
         {
             VrstaProracuna vp = new VrstaProracuna();
             double rez;
-            string[] parseddata = s.Split('/');
+            string[] parseddata = s.Split('-');
+            string[] vremeProracun = parseddata[0].Split('/');
             int sekund = 0, minut = 0, sat = 0, dan = 0, mesec = 0, godina = 0;
-            Int32.TryParse(parseddata[0], out sekund);
-            Int32.TryParse(parseddata[1], out minut);
-            Int32.TryParse(parseddata[2], out sat);
-            Int32.TryParse(parseddata[3], out dan);
-            Int32.TryParse(parseddata[4], out mesec);
-            string[] secondparse = parseddata[5].Split('-');
-            Int32.TryParse(secondparse[0], out godina);
-            Double.TryParse(secondparse[1], out rez);
-            if(secondparse[2] == "MINIMALNI")
+            Int32.TryParse(vremeProracun[0], out sekund);
+            Int32.TryParse(vremeProracun[1], out minut);
+            Int32.TryParse(vremeProracun[2], out sat);
+            Int32.TryParse(vremeProracun[3], out dan);
+            Int32.TryParse(vremeProracun[4], out mesec);
+            Int32.TryParse(vremeProracun[5], out godina);
+            DateTime vreme = new DateTime(godina, mesec, dan, sat, minut, sekund);
+            vremeProracuna = vreme;
+            string[] posV = parseddata[1].Split('/');
+            Int32.TryParse(posV[0], out sekund);
+            Int32.TryParse(posV[1], out minut);
+            Int32.TryParse(posV[2], out sat);
+            Int32.TryParse(posV[3], out dan);
+            Int32.TryParse(posV[4], out mesec);
+            Int32.TryParse(posV[5], out godina);
+            vreme = new DateTime(godina, mesec, dan, sat, minut, sekund);
+            posVreme = vreme;
+            if (parseddata[3] == "MINIMALNI")
             {
                 vp = VrstaProracuna.MINIMALNI;
             }
-            if (secondparse[2] == "MAKSIMALNI")
+            if (parseddata[3] == "MAKSIMALNI")
             {
                 vp = VrstaProracuna.MAKSIMALNI;
             }
-            if (secondparse[2] == "PROSECNI")
+            if (parseddata[3] == "PROSECNI")
             {
                 vp = VrstaProracuna.PROSECNI;
             }
 
-            DateTime vreme = new DateTime(godina, mesec, dan, sat, minut, sekund);
-            vremeProracuna = vreme;
-            rezultat = rez;
+            
+            Double.TryParse(parseddata[2],out rezultat);
         }
     }
 }
