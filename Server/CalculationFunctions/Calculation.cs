@@ -95,16 +95,19 @@ namespace CalculationFunctions
                             if (data.Equals("min"))
                             {
                                 paketOut.Rezultat = listaMerenja.Min();
+                                paketOut.VrstaProracuna = VrstaProracuna.MINIMALNI;
                             }
                             //Maximum
                             if (data.Equals("max"))
                             {
                                 paketOut.Rezultat = listaMerenja.Max();
+                                paketOut.VrstaProracuna = VrstaProracuna.MAKSIMALNI;
                             }
                             //Prosek
                             if (data.Equals("average"))
                             {
                                 paketOut.Rezultat = listaMerenja.Average();
+                                paketOut.VrstaProracuna = VrstaProracuna.PROSECNI;
                             }
                             k++;
                             if(k == unosi.Count) { k = 0; }
