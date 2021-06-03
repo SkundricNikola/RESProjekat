@@ -112,7 +112,7 @@ namespace DataBase
                         {
                             //DATA ACCESS PITA ZA LISTU TAKO STO SALJE DATUM
                             
-                            dataAccessCom.ReadDataBaseElement(tip[1], false);
+                            bytes = System.Text.Encoding.ASCII.GetBytes(dataAccessCom.ReadDataBaseElement(tip[1], false));
                             /*----------------------------------------------------------
                              * LOGIKA ZA DOBAVLJANJE LISTE, DODATI KAD SE FUNKCIJA ZA CITANJE IZ BAZE IMPLEMENTIRA
                              * TRENUTNO SLEDECA STRANA OCEKUJE ODGOVOR U FORMATU godina/mesec/dan/sat/minut/sekund/rezultat/vrstaproracuna;godina/mesec.....
@@ -187,6 +187,7 @@ namespace DataBase
         {
             FileStream rfile = new FileStream("DataBase", FileMode.Open);
             doc.Load(rfile);
+            if(ispis)
             string address = "";
             XmlNodeList list = doc.GetElementsByTagName("Unos");
             for (int i = 0; i < list.Count; i++)
