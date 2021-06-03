@@ -50,7 +50,7 @@ namespace DataAccess
             responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
             
         }
-        public static void AskForList(DateTime datum,ref string odgovorporuka)
+        public static void AskForList(DateTime datum,ref string odgovorporuka,bool ispis)
         {
             string responseData = "";
             IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10011);
