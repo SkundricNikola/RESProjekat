@@ -113,16 +113,12 @@ namespace DataBase
                             //DATA ACCESS PITA ZA LISTU TAKO STO SALJE DATUM
                             
                             bytes = System.Text.Encoding.ASCII.GetBytes(dataAccessCom.ReadDataBaseElement(tip[1], false));
-                            /*----------------------------------------------------------
-                             * LOGIKA ZA DOBAVLJANJE LISTE, DODATI KAD SE FUNKCIJA ZA CITANJE IZ BAZE IMPLEMENTIRA
-                             * TRENUTNO SLEDECA STRANA OCEKUJE ODGOVOR U FORMATU godina/mesec/dan/sat/minut/sekund/rezultat/vrstaproracuna;godina/mesec.....
-                             * UKOLIKO SE PROMENI FORMAT LISTE, POTREBNO JE PROMENITI I PARSIRANJE SA DRUGE STRANE
-                             ---------------------------------------------------------------------------*/
                             stream.Write(bytes, 0, bytes.Length);
                         }
                         else//Read_Client
                         {
-
+                            bytes = System.Text.Encoding.ASCII.GetBytes(dataAccessCom.ReadDataBaseElement(tip[1], true));
+                            stream.Write(bytes, 0, bytes.Length);
                         }
                     }
                     // Shutdown and end connection
