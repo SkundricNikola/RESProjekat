@@ -125,7 +125,7 @@ namespace DataAccess
                             sati = 0;
                             datumuporuci = new DateTime(godine, meseci, dani, sati, minuti, sekunde);
                             string odgovorporuka = "";
-                            var porukathread = new Thread(() => DataBaseCommunication.AskForList(datumuporuci, ref odgovorporuka, true));
+                            var porukathread = new Thread(() => DataBaseCommunication.AskForList(datumuporuci, ref odgovorporuka));
                             
                             bytes = System.Text.Encoding.ASCII.GetBytes(odgovorporuka);
                             stream.Write(bytes, 0, bytes.Length);
