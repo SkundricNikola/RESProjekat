@@ -24,6 +24,39 @@ namespace DataBase
             xtw.WriteStartElement("Data");
             xtw.WriteEndElement();
             xtw.Close();
+            string id = "";
+            int i = 0;
+            while (i != 3)
+            {
+
+                FileStream lfile = new FileStream("DataBase", FileMode.Open);
+                doc.Load(lfile);
+                switch (i)
+                {
+                    case 0:
+                        id = "MINIMALNI";
+                        break;
+                    case 1:
+                        id = "MAKSIMALNI";
+                        break;
+                    case 2:
+                        id = "PROSECNI";
+                        break;
+                    default:
+                        break;
+                }
+                
+                XmlElement cl = doc.CreateElement("Kalkulacija");
+                cl.SetAttribute("Tip", id);
+                XmlElement na = doc.CreateElement("Forma");
+                XmlText natext = doc.CreateTextNode("");
+                na.AppendChild(natext);
+                cl.AppendChild(na);
+                doc.DocumentElement.AppendChild(cl);
+                lfile.Close();
+                doc.Save("DataBase");
+                i++;
+            }
         }
         public static void ReceiveMessage()
         {
@@ -56,7 +89,6 @@ namespace DataBase
                         tipa = tip[0];
                         if (tipa.Equals("Client_Insert"))
                         {
-                            tip[1] = "Client*" + tip[1];
                             bool done = dataAccessCom.CreateNewDataBaseElement(tip[1]);
                             string dobar = "";
                             if (done)
@@ -71,6 +103,10 @@ namespace DataBase
 
                             bytes = System.Text.Encoding.ASCII.GetBytes(dobar);
                             stream.Write(bytes, 0, bytes.Length);
+                        }
+                        else if (tipa.Equals("Calculation_Update"))
+                        {
+                           dataAccessCom.UpdateDataBaseElement(tip[1]);
                         }
                         else if(tipa.Equals("Read_Calculation"))
                         {
@@ -117,56 +153,36 @@ namespace DataBase
         {
             FileStream lfile = new FileStream("DataBase", FileMode.Open);
             doc.Load(lfile);
-            string[] tip = format.Split('*');
-            if(tip[0] == "Client")
-            {
-                string[] delovi_cp = tip[1].Split('-');
-                string[] dateTime = delovi_cp[0].Split('/');
-                string id = dateTime[3] + dateTime[4] + dateTime[5];
-                string data = tip[1];
-                XmlElement cl = doc.CreateElement("Unos");
-                cl.SetAttribute("Date", id);
-                XmlElement na = doc.CreateElement("Forma");
-                XmlText natext = doc.CreateTextNode(data);
-                na.AppendChild(natext);
-                cl.AppendChild(na);
-                doc.DocumentElement.AppendChild(cl);
-                lfile.Close();
-                doc.Save("DataBase");
-                return true;
-            }
-            else//tip[0] == "Calculation"
-            {
-                string[] delovi_cp = tip[1].Split('-');
-                string[] dateTime = delovi_cp[0].Split('/');
-                string id = dateTime[3] + dateTime[4] + dateTime[5];
-                string data = tip[1];
-                XmlElement cl = doc.CreateElement("Unos");
-                cl.SetAttribute("Date", id);
-                XmlElement na = doc.CreateElement("Forma");
-                XmlText natext = doc.CreateTextNode(data);
-                na.AppendChild(natext);
-                cl.AppendChild(na);
-                doc.DocumentElement.AppendChild(cl);
-                lfile.Close();
-                doc.Save("DataBase");
-                return true;
-            }
+            string[] delovi_cp = format.Split('-');
+            string[] dateTime = delovi_cp[0].Split('/');
+            string id = dateTime[3] + dateTime[4] + dateTime[5];
+            string data = format;
+            XmlElement cl = doc.CreateElement("Unos");
+            cl.SetAttribute("Date", id);
+            XmlElement na = doc.CreateElement("Forma");
+            XmlText natext = doc.CreateTextNode(data);
+            na.AppendChild(natext);
+            cl.AppendChild(na);
+            doc.DocumentElement.AppendChild(cl);
+            lfile.Close();
+            doc.Save("DataBase");
+            return true;
         }
 
-        public void UpdateDataBaseElement(string format, int id)
+        public void UpdateDataBaseElement(string format)
         {
             FileStream up = new FileStream("DataBase", FileMode.Open);
             doc.Load(up);
-            XmlNodeList list = doc.GetElementsByTagName("Unos");
+            XmlNodeList list = doc.GetElementsByTagName("Kalkulacija");
+            string[] parts = format.Split('-');
+            string id = parts[3];
             for (int i = 0; i < list.Count; i++)
             {
-                XmlElement cu = (XmlElement)doc.GetElementsByTagName("Unos")[i];
+                XmlElement cu = (XmlElement)doc.GetElementsByTagName("Kalkulacija")[i];
                 XmlElement add = (XmlElement)doc.GetElementsByTagName("Forma")[i];
-                if (cu.GetAttribute("Date") == "abc")
+                if (cu.GetAttribute("Tip") == id)
                 {
-                    cu.SetAttribute("Date", "efgh");
-                    add.InnerText = "pqrs,india";
+                    add.InnerText = format;
                     break;
                 }
             }
