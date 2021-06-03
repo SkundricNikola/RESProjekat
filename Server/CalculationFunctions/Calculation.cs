@@ -70,7 +70,7 @@ namespace CalculationFunctions
                             unosi.Add(cp.ToString());
                         }
                         int k = 0;
-                        while (listaMerenja.Count == unosi.Count)
+                        while (listaMerenja.Count != unosi.Count)
                         {
                             string[] delovi = unosi[k].Split('-');
                             //radimo sa DateTime delom
