@@ -126,7 +126,7 @@ namespace DataAccess
                             sati = 0;
                             datumuporuci = new DateTime(godine, meseci, dani, sati, minuti, sekunde);
                             lista = new List<CalculationPackage>();
-                            var porukathread = new Thread(() => DataBaseCommunication.AskForList(datumuporuci, ref lista));
+                            var porukathread = new Thread(() => DataBaseCommunication.AskForList(datumuporuci, ref lista, true));
                             string odgovorporuka = "";
                             foreach(var item in lista)
                             {
