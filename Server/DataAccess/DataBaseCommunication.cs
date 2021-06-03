@@ -35,7 +35,22 @@ namespace DataAccess
             }
             else { dobar = false; }
         }
-        public static void AskForList(DateTime datum,ref List<CalculationPackage>lista,bool ispis)
+        public static void SendInfoToInsert_Calculation(CalculationPackage cp)
+        {
+            string responseData = "";
+            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10011);
+            TcpClient client = new TcpClient(iPEndPoint);
+            NetworkStream ns = client.GetStream();
+
+            string poruka = "Calculation_Update;" + cp.ToString();
+            Byte[] data = System.Text.Encoding.ASCII.GetBytes(poruka);
+            ns.Write(data, 0, data.Length);
+
+            Int32 bytes = ns.Read(data, 0, data.Length);
+            responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+            
+        }
+        public static void AskForList(DateTime datum,ref string odgovorporuka,bool ispis)
         {
             string responseData = "";
             IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10011);
@@ -63,42 +78,12 @@ namespace DataAccess
             if (!ispis)
             {
                 responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                string[] splitdata = responseData.Split(';');
-                foreach (string s in splitdata)
-                {
-                    int godina, mesec, dan, sat, minut, sekund;
-                    double vrednost;
-                    VrstaProracuna vp = new VrstaProracuna();
-                    string[] podaci = s.Split('/');
-                    Int32.TryParse(podaci[0], out godina);
-                    Int32.TryParse(podaci[1], out mesec);
-                    Int32.TryParse(podaci[2], out dan);
-                    Int32.TryParse(podaci[3], out sat);
-                    Int32.TryParse(podaci[4], out minut);
-                    Int32.TryParse(podaci[5], out sekund);
-                    Double.TryParse(podaci[6], out vrednost);
-                    if (podaci[7] == "MINIMALNI")
-                    {
-                        vp = VrstaProracuna.MINIMALNI;
-                    }
-                    else if (podaci[7] == "PROSECNI")
-                    {
-                        vp = VrstaProracuna.PROSECNI;
-                    }
-                    else if (podaci[7] == "MAKSIMALNI")
-                    {
-                        vp = VrstaProracuna.MAKSIMALNI;
-                    }
-                    else { vp = VrstaProracuna.NEODREDJENI; }
-                    DateTime tempdatum = new DateTime(godina, mesec, dan, sat, minut, sekund);
-                    CalculationPackage cp = new CalculationPackage(tempdatum, vrednost, vp);
-                    lista.Add(cp);
-                }
+                odgovorporuka = responseData;
             }
             else
             {
                 responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                string[] splitdata = responseData.Split('');
+                odgovorporuka = responseData;
 
             }
             ns.Close();
