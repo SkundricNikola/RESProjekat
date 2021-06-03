@@ -88,10 +88,7 @@ namespace CalculationFunctions
                             double potrosnja = 0;
                             Double.TryParse(delovi[2], out potrosnja);
                             listaMerenja.Add(potrosnja);
-                            //loopback
-                            //TODO: rad sa upisom trenutnog vremena izracunavanja
-                            //kad skontamo sta je
-                            //Minimum kodovi su abstraktni
+                            paketOut.PosVreme = DateTime.Now;
                             if (data.Equals("min"))
                             {
                                 paketOut.Rezultat = listaMerenja.Min();
