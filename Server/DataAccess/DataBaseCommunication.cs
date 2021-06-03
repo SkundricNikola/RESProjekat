@@ -23,26 +23,34 @@ namespace DataAccess
             TcpClient client = new TcpClient(iPEndPoint);
             NetworkStream ns = client.GetStream();
 
-            string poruka = "1;"+ cp.ToString();
+            string poruka = "Client_Insert;"+ cp.ToString();
             Byte[] data = System.Text.Encoding.ASCII.GetBytes(poruka);
             ns.Write(data, 0, data.Length);
 
             Int32 bytes = ns.Read(data, 0, data.Length);
             responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-            if(responseData == "dobar")
+            if(responseData == "true")
             {
                 dobar = true;
             }
             else { dobar = false; }
         }
-        public static void AskForList(DateTime datum,ref List<CalculationPackage>lista)
+        public static void AskForList(DateTime datum,ref List<CalculationPackage>lista,bool ispis)
         {
             string responseData = "";
             IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10011);
             TcpClient client = new TcpClient(iPEndPoint);
             NetworkStream ns = client.GetStream();
+            string poruka = "";
             //FORMATIRATI PORUKU KOJA SE SALJE (poruka)
-            string poruka = "2;"+ FormatirajDatum(datum);
+            if (!ispis)
+            {
+                poruka = "Read_Calculation;" + FormatirajDatum(datum);
+            }
+            else
+            {
+                poruka = "Read_Client;" + FormatirajDatum(datum);
+            }
             Byte[] data = System.Text.Encoding.ASCII.GetBytes(poruka);
             ns.Write(data, 0, data.Length);
             //-----------------------------------------------
@@ -52,37 +60,46 @@ namespace DataAccess
             // String to store the response ASCII representation.
             // Read the first batch of the TcpServer response bytes.
             Int32 bytes = ns.Read(data, 0, data.Length);
-            responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-            string[] splitdata = responseData.Split(';');
-            foreach(string s in splitdata)
+            if (!ispis)
             {
-                int godina, mesec, dan, sat, minut, sekund;
-                double vrednost;
-                VrstaProracuna vp = new VrstaProracuna();
-                string[] podaci = s.Split('/');
-                Int32.TryParse(podaci[0], out godina);
-                Int32.TryParse(podaci[1], out mesec);
-                Int32.TryParse(podaci[2], out dan);
-                Int32.TryParse(podaci[3], out sat);
-                Int32.TryParse(podaci[4], out minut);
-                Int32.TryParse(podaci[5], out sekund);
-                Double.TryParse(podaci[6], out vrednost);
-                if(podaci[7] == "MINIMALNI")
+                responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                string[] splitdata = responseData.Split(';');
+                foreach (string s in splitdata)
                 {
-                    vp = VrstaProracuna.MINIMALNI;
+                    int godina, mesec, dan, sat, minut, sekund;
+                    double vrednost;
+                    VrstaProracuna vp = new VrstaProracuna();
+                    string[] podaci = s.Split('/');
+                    Int32.TryParse(podaci[0], out godina);
+                    Int32.TryParse(podaci[1], out mesec);
+                    Int32.TryParse(podaci[2], out dan);
+                    Int32.TryParse(podaci[3], out sat);
+                    Int32.TryParse(podaci[4], out minut);
+                    Int32.TryParse(podaci[5], out sekund);
+                    Double.TryParse(podaci[6], out vrednost);
+                    if (podaci[7] == "MINIMALNI")
+                    {
+                        vp = VrstaProracuna.MINIMALNI;
+                    }
+                    else if (podaci[7] == "PROSECNI")
+                    {
+                        vp = VrstaProracuna.PROSECNI;
+                    }
+                    else if (podaci[7] == "MAKSIMALNI")
+                    {
+                        vp = VrstaProracuna.MAKSIMALNI;
+                    }
+                    else { vp = VrstaProracuna.NEODREDJENI; }
+                    DateTime tempdatum = new DateTime(godina, mesec, dan, sat, minut, sekund);
+                    CalculationPackage cp = new CalculationPackage(tempdatum, vrednost, vp);
+                    lista.Add(cp);
                 }
-                else if(podaci[7] == "PROSECNI")
-                {
-                    vp = VrstaProracuna.PROSECNI;
-                }
-                else if(podaci[7] == "MAKSIMALNI")
-                {
-                    vp = VrstaProracuna.MAKSIMALNI;
-                }
-                else { vp = VrstaProracuna.NEODREDJENI; }
-                DateTime tempdatum = new DateTime(godina, mesec, dan, sat, minut, sekund);
-                CalculationPackage cp = new CalculationPackage(tempdatum,vrednost,vp);
-                lista.Add(cp);
+            }
+            else
+            {
+                responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                string[] splitdata = responseData.Split('');
+
             }
             ns.Close();
             client.Close();
