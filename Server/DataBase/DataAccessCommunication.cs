@@ -34,6 +34,7 @@ namespace DataBase
                 Byte[] bytes = new Byte[256];
                 String data = null;
                 DateTime datumprovere;
+                DataAccessCommunication dataAccessCom = new DataAccessCommunication();
                 while (true)
                 {
                     Console.Write("Waiting for a connection... ");
@@ -51,9 +52,27 @@ namespace DataBase
                         data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
                         Console.WriteLine("Received: {0}", data);
                         string[] tip = data.Split(';');
-                        int tipa;
-                        Int32.TryParse(tip[0], out tipa);
-                        if (tipa == 1)
+                        string tipa = "";
+                        tipa = tip[0];
+                        if (tipa.Equals("Client_Insert"))
+                        {
+                            tip[1] = "Client*" + tip[1];
+                            bool done = dataAccessCom.CreateNewDataBaseElement(tip[1]);
+                            string dobar = "";
+                            if (done)
+                            {
+                                dobar = "true";
+
+                            }
+                            else
+                            {
+                                dobar = "false";
+                            }
+
+                            bytes = System.Text.Encoding.ASCII.GetBytes(dobar);
+                            stream.Write(bytes, 0, bytes.Length);
+                        }
+                        else if(tipa.Equals("Read_Calculation"))
                         {
                             //DATA ACCESS PITA ZA LISTU TAKO STO SALJE DATUM
                             int godina, mesec, dan, sat, minut, sekund;
@@ -72,10 +91,9 @@ namespace DataBase
                              ---------------------------------------------------------------------------*/
                             stream.Write(bytes, 0, bytes.Length);
                         }
-                        else 
+                        else//Read_Client
                         {
-                            bytes = System.Text.Encoding.ASCII.GetBytes("dobar");
-                            stream.Write(bytes, 0,bytes.Length);
+
                         }
                     }
                     // Shutdown and end connection
@@ -95,19 +113,45 @@ namespace DataBase
             }
         }
 
-        public void CreateNewDataBaseElement(string format)
+        public bool CreateNewDataBaseElement(string format)
         {
             FileStream lfile = new FileStream("DataBase", FileMode.Open);
             doc.Load(lfile);
-            XmlElement cl = doc.CreateElement("Unos");
-            cl.SetAttribute("Date", "abc");
-            XmlElement na = doc.CreateElement("Forma");
-            XmlText natext = doc.CreateTextNode("xyz,india");
-            na.AppendChild(natext);
-            cl.AppendChild(na);
-            doc.DocumentElement.AppendChild(cl);
-            lfile.Close();
-            doc.Save("DataBase");
+            string[] tip = format.Split('*');
+            if(tip[0] == "Client")
+            {
+                string[] delovi_cp = tip[1].Split('-');
+                string[] dateTime = delovi_cp[0].Split('/');
+                string id = dateTime[3] + dateTime[4] + dateTime[5];
+                string data = tip[1];
+                XmlElement cl = doc.CreateElement("Unos");
+                cl.SetAttribute("Date", id);
+                XmlElement na = doc.CreateElement("Forma");
+                XmlText natext = doc.CreateTextNode(data);
+                na.AppendChild(natext);
+                cl.AppendChild(na);
+                doc.DocumentElement.AppendChild(cl);
+                lfile.Close();
+                doc.Save("DataBase");
+                return true;
+            }
+            else//tip[0] == "Calculation"
+            {
+                string[] delovi_cp = tip[1].Split('-');
+                string[] dateTime = delovi_cp[0].Split('/');
+                string id = dateTime[3] + dateTime[4] + dateTime[5];
+                string data = tip[1];
+                XmlElement cl = doc.CreateElement("Unos");
+                cl.SetAttribute("Date", id);
+                XmlElement na = doc.CreateElement("Forma");
+                XmlText natext = doc.CreateTextNode(data);
+                na.AppendChild(natext);
+                cl.AppendChild(na);
+                doc.DocumentElement.AppendChild(cl);
+                lfile.Close();
+                doc.Save("DataBase");
+                return true;
+            }
         }
 
         public void UpdateDataBaseElement(string format, int id)
