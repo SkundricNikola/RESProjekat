@@ -50,7 +50,7 @@ namespace DataAccess
             responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
             
         }
-        public static void AskForList(DateTime datum,ref string odgovorporuka,bool ispis)
+        public static void AskForList(DateTime datum,ref string odgovorporuka)
         {
             string responseData = "";
             IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10011);
@@ -75,17 +75,10 @@ namespace DataAccess
             // String to store the response ASCII representation.
             // Read the first batch of the TcpServer response bytes.
             Int32 bytes = ns.Read(data, 0, data.Length);
-            if (!ispis)
-            {
+            
                 responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
                 odgovorporuka = responseData;
-            }
-            else
-            {
-                responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                odgovorporuka = responseData;
-
-            }
+            
             ns.Close();
             client.Close();
         }
