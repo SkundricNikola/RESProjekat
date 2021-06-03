@@ -16,7 +16,7 @@ namespace DataAccess
             string formatirano = d.Year + "/" + d.Month + "/" + d.Day + "/" + d.Hour + "/" + d.Minute + "/" + d.Second;
             return formatirano;
         }
-        public static void SendInfoToInsert(ClientPackage cp,ref bool dobar)
+        public static void SendInfoToInsert_Client(ClientPackage cp,ref bool dobar)
         {
             string responseData = "";
             IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10011);
