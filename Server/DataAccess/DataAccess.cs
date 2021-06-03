@@ -79,7 +79,7 @@ namespace DataAccess
                             continue;
                         }
                         //--------------------------------------------------------
-                        //VRSTA PORUKE KADA KORISNIK DODAJE OBJEKAT U BAZU PDATAKA
+                        //VRSTA PORUKE KADA KORISNIK DODAJE OBJEKAT U BAZU PODATAKA
                         //--------------------------------------------------------
                         else if(vrstaporuke == 1)
                         {
