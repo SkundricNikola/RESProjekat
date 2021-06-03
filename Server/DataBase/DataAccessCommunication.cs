@@ -111,15 +111,8 @@ namespace DataBase
                         else if(tipa.Equals("Read_Calculation"))
                         {
                             //DATA ACCESS PITA ZA LISTU TAKO STO SALJE DATUM
-                            int godina, mesec, dan, sat, minut, sekund;
-                            string[] par = tip[1].Split('/');
-                            Int32.TryParse(par[0], out godina);
-                            Int32.TryParse(par[1], out mesec);
-                            Int32.TryParse(par[2], out dan);
-                            Int32.TryParse(par[3], out sat);
-                            Int32.TryParse(par[4], out minut);
-                            Int32.TryParse(par[5], out sekund);
-                            datumprovere = new DateTime(godina, mesec, dan, sat, minut, sekund);
+                            
+                            dataAccessCom.ReadDataBaseElement(tip[1], false);
                             /*----------------------------------------------------------
                              * LOGIKA ZA DOBAVLJANJE LISTE, DODATI KAD SE FUNKCIJA ZA CITANJE IZ BAZE IMPLEMENTIRA
                              * TRENUTNO SLEDECA STRANA OCEKUJE ODGOVOR U FORMATU godina/mesec/dan/sat/minut/sekund/rezultat/vrstaproracuna;godina/mesec.....
@@ -190,7 +183,7 @@ namespace DataBase
             doc.Save("DataBase");
         }
 
-        public string  ReadDataBaseElement(string format, int code)
+        public string  ReadDataBaseElement(string format, bool ispis)
         {
             FileStream rfile = new FileStream("DataBase", FileMode.Open);
             doc.Load(rfile);
