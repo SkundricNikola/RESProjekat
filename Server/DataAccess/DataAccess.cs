@@ -124,13 +124,9 @@ namespace DataAccess
                             minuti = 0;
                             sati = 0;
                             datumuporuci = new DateTime(godine, meseci, dani, sati, minuti, sekunde);
-                            lista = new List<CalculationPackage>();
-                            var porukathread = new Thread(() => DataBaseCommunication.AskForList(datumuporuci, ref lista, true));
                             string odgovorporuka = "";
-                            foreach(var item in lista)
-                            {
-                                odgovorporuka += item.ToString() + ";";
-                            }
+                            var porukathread = new Thread(() => DataBaseCommunication.AskForList(datumuporuci, ref odgovor, true));
+                            
                             bytes = System.Text.Encoding.ASCII.GetBytes(odgovorporuka);
                             stream.Write(bytes, 0, bytes.Length);
                         }
