@@ -98,7 +98,7 @@ namespace DataAccess
                             clientPackage.Potrosnja = vrednostpotrosnje;
                             clientPackage.Region = region;
                             bool dobar = false;
-                            var porukathread = new Thread(() => DataBaseCommunication.SendInfoToInsert(clientPackage,ref dobar));
+                            var porukathread = new Thread(() => DataBaseCommunication.SendInfoToInsert_Client(clientPackage,ref dobar));
                             porukathread.Start();
                             if(dobar)
                             {
@@ -125,7 +125,7 @@ namespace DataAccess
                             sati = 0;
                             datumuporuci = new DateTime(godine, meseci, dani, sati, minuti, sekunde);
                             string odgovorporuka = "";
-                            var porukathread = new Thread(() => DataBaseCommunication.AskForList(datumuporuci, ref odgovor, true));
+                            var porukathread = new Thread(() => DataBaseCommunication.AskForList(datumuporuci, ref odgovorporuka, true));
                             
                             bytes = System.Text.Encoding.ASCII.GetBytes(odgovorporuka);
                             stream.Write(bytes, 0, bytes.Length);
