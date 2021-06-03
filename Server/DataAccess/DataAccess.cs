@@ -116,7 +116,6 @@ namespace DataAccess
                         //--------------------------------------------------------
                         else
                         {
-
                             string[] datumpodaci = parametri[2].Split('/');
                             Int32.TryParse(datumpodaci[0], out dani);
                             Int32.TryParse(datumpodaci[1], out meseci);
