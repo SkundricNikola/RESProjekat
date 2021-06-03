@@ -238,7 +238,7 @@ namespace DataBase
                     XmlElement add = (XmlElement)doc.GetElementsByTagName("Forma")[i];
                     if (cl.GetAttribute("Date") == id)
                     {
-                        address += add.InnerText + '\n';
+                        address += add.InnerText + ';';
                     }
                 }
                 rfile.Close();
