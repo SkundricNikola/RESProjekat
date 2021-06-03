@@ -19,6 +19,11 @@ namespace DataBasePackages
         private DateTime posVreme;
         private double rezultat;
         VrstaProracuna vrstaProracuna;
+        public VrstaProracuna VrstaProracuna
+        {
+            get { return vrstaProracuna; }
+            set { vrstaProracuna = value; }
+        }
         public DateTime VremeProracuna
         {
             get { return vremeProracuna; }
