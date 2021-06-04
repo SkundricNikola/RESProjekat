@@ -185,7 +185,7 @@ namespace DataBase
             doc.Load(rfile);
             if (ispis)
             {
-                string address = "";
+                string address = "------------Unosi klijenta----------";
                 string[] delovi = format.Split('/');
                 string id = delovi[0] + delovi[1] + delovi[2];
                 XmlNodeList list = doc.GetElementsByTagName("Unos");
@@ -195,32 +195,17 @@ namespace DataBase
                     XmlElement add = (XmlElement)doc.GetElementsByTagName("Forma")[i];
                     if (cl.GetAttribute("Date") == id)
                     {
-                        address += add.InnerText + '\n';
+                        address += "\nUnos:\t"+add.InnerText + '\n';
                     }
                 }
                 list = doc.GetElementsByTagName("Kalkulacija");
+                address += "---------Vrednosti kalkulacija---------\n";
                 for (int i = 0; i < 3; i++)
                 {
-                    switch (i)
-                    {
-                        case 0:
-                            id = "MINIMALNI";
-                            break;
-                        case 1:
-                            id = "MAKSIMALNI";
-                            break;
-                        case 2:
-                            id = "PROSECNI";
-                            break;
-                        default:
-                            break;
-                    }
                     XmlElement cu = (XmlElement)doc.GetElementsByTagName("Kalkulacija")[i];
                     XmlElement add = (XmlElement)doc.GetElementsByTagName("Forma")[i];
-                    if (cu.GetAttribute("Tip") == id)
-                    {
-                        address += add.InnerText + '\n';
-                    }
+                        address += "\nKalkulacija:\t" + add.InnerText + '\n';
+                        
                 }
 
                 rfile.Close();
