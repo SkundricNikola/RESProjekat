@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace Client
 {
-    class Informer
+    public class AnswerReader : IReader
+    {
+        public string AskForText()
+        {
+            return Console.ReadLine();
+        }
+    }
+    public class Informer
     {
         public Informer()
         {
@@ -39,6 +46,7 @@ namespace Client
         //FUNKCIJA KOJA REALIZUJE KOMUNIKACIJU KORISNIKA SA KLIJENT APLIKACIJOM
         public string AskClient()
         {
+            AnswerReader ar = new AnswerReader();
             string readtext = "";
             int num;
             string ninfo = "";
@@ -47,7 +55,7 @@ namespace Client
             do
             {
                 ShowOptions();
-                readtext = Console.ReadLine();
+                readtext = ar.AskForText();
                 if (readtext == "IZADJI")
                 {
                     Console.WriteLine("");
@@ -60,12 +68,12 @@ namespace Client
                 poruka += "1;";
                 Console.WriteLine("Odrabrali ste unos podataka za određeni region i određeni datum");
                 Console.WriteLine("Unesite region za koji unosite vrednost");
-                ninfo = Console.ReadLine();
+                ninfo = ar.AskForText();
                 poruka += ninfo;
                 do
                 {
                     Console.WriteLine("Unesite vreme za koje unosite vrednost u formatu ss/mm/SS/dd/MM/GG");
-                    ninfo = Console.ReadLine();
+                    ninfo = ar.AskForText();
                     string[] iscorrectformat = ninfo.Split('/');
                     if (iscorrectformat.Length != 6)
                     {
@@ -91,7 +99,7 @@ namespace Client
                 do
                 {
                     Console.WriteLine("Unesite potrosnju (unos sa dve decimalne cifre)");
-                    ninfo = Console.ReadLine();
+                    ninfo = ar.AskForText();
                     double pokusaj;
                     if (Double.TryParse(ninfo, out pokusaj) == false)
                     {

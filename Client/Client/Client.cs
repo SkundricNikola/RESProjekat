@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Client
 {
-    class Client
+    public class Client
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Console.WriteLine("Welcome to the client application, you will be connected shortly...");
             Informer i = new Informer();
