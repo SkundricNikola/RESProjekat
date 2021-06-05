@@ -67,31 +67,56 @@ namespace Client
             {
                 poruka += "1;";
                 Console.WriteLine("Odrabrali ste unos podataka za određeni region i određeni datum");
-                Console.WriteLine("Unesite region za koji unosite vrednost");
-                ninfo = ar.AskForText();
-                poruka += ninfo;
                 do
                 {
-                    Console.WriteLine("Unesite vreme za koje unosite vrednost u formatu ss/mm/SS/dd/MM/GG");
-                    ninfo = ar.AskForText();
-                    string[] iscorrectformat = ninfo.Split('/');
-                    if (iscorrectformat.Length != 6)
+                    Console.WriteLine("Unesite region za koji unosite vrednost");
+                    try
                     {
-                        Console.WriteLine("Pogresan format! Niste uneli neki parametar ili ste ih uneli previse.");
-                        continue;
+                        ninfo = ar.AskForText();
+                        ninfo = ninfo.Trim();
+                        ninfo = ninfo.ToUpper();
+                        if (ninfo == "")
+                        {
+                            throw new FormatException("Neispravna vrednost za region");
+                        }
+                        else
+                        {
+                            poruka += ninfo;
+                        }
                     }
-                    int sekund = -1, minut = -1, sat = -1, dan = -1, mesec = -1, godina = -1;
-                    if (Int32.TryParse(iscorrectformat[0], out sekund) == false || Int32.TryParse(iscorrectformat[1], out minut) == false || Int32.TryParse(iscorrectformat[2], out sat) == false || Int32.TryParse(iscorrectformat[3], out dan) == false || Int32.TryParse(iscorrectformat[4], out mesec) == false || Int32.TryParse(iscorrectformat[5], out godina) == false)
+                    catch (FormatException e)
                     {
-                        Console.WriteLine("Pogresan format! Nije moguce pretvoriti neki od parametara u broj. ");
-                        continue;
+                        Console.WriteLine(e.Message);
+                        throw;
+                        return e.Message;
                     }
-                    if (sekund > 59 || sekund < 0 || minut > 59 || minut < 0 || sat > 23 || sat < 0 || dan > 31 || dan < 0 || mesec > 12 || mesec < 0 || godina > 2021 || godina < 2000)
+                } while (ninfo == "");
+                do
+                {
+                    Console.WriteLine("Unesite vreme za koje unosite vrednost u formatu sekunde/minuti/sati/dani/meseci/godine");
+                    try
                     {
-                        Console.WriteLine("Pogresan format! Neki od podataka ima vrednost vecu/manju nego sto bi smeo da ima.");
-                        continue;
+                        ninfo = ar.AskForText();
+                        string[] iscorrectformat = ninfo.Split('/');
+                        if (iscorrectformat.Length != 6)
+                        {
+                            throw new FormatException("Pogresan format! Niste uneli neki parametar ili ste ih uneli previse.");
+                        }
+                        int sekund = -1, minut = -1, sat = -1, dan = -1, mesec = -1, godina = -1;
+                        if (Int32.TryParse(iscorrectformat[0], out sekund) == false || Int32.TryParse(iscorrectformat[1], out minut) == false || Int32.TryParse(iscorrectformat[2], out sat) == false || Int32.TryParse(iscorrectformat[3], out dan) == false || Int32.TryParse(iscorrectformat[4], out mesec) == false || Int32.TryParse(iscorrectformat[5], out godina) == false)
+                        {
+                            throw new FormatException("Pogresan format! Nije moguce pretvoriti neki od parametara u broj. ");
+                       }
+                        if (sekund > 59 || sekund < 0 || minut > 59 || minut < 0 || sat > 23 || sat < 0 || dan > 31 || dan < 0 || mesec > 12 || mesec < 0 || godina > 2021 || godina < 2000)
+                        {
+                            throw new FormatException("Pogresan format! Neki od podataka ima vrednost vecu/manju nego sto bi smeo da ima.");
+                        }
+                        else { iscorrect = true; }
                     }
-                    iscorrect = true;
+                    catch(FormatException e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
                 }
                 while (!iscorrect);
                 poruka += ";" + ninfo;
@@ -99,15 +124,25 @@ namespace Client
                 do
                 {
                     Console.WriteLine("Unesite potrosnju (unos sa dve decimalne cifre)");
-                    ninfo = ar.AskForText();
-                    double pokusaj;
-                    if (Double.TryParse(ninfo, out pokusaj) == false)
+                    try
                     {
-                        Console.WriteLine("Pogresan format!");
-                        continue;
+                        ninfo = ar.AskForText();
+                        double pokusaj;
+                        if (Double.TryParse(ninfo, out pokusaj) == false)
+                        {
+                            throw new FormatException("Pogresan format! Nije unet broj!");
+                        }
+                        else
+                        {
+                            iscorrect = true;
+                            poruka += ";" + ninfo;
+                        }
                     }
-                    iscorrect = true;
-                    poruka += ";" + ninfo;
+                    catch(FormatException e)
+                    {
+                        Console.WriteLine(e.Message);
+                        throw;
+                    }
                 } while (!iscorrect);
             }
             else
@@ -151,18 +186,62 @@ namespace Client
             //{0}/{1}/{2}/{3}/{4}/{5}-{6}-{7}
             foreach (var objekat in objekti)
             {
+                string[] delovi2 = {"","","","","","" };
                 string[] delovi = objekat.Split('/');
                 int sekund = 0, minut = 0, sat = 0, dan = 0, mesec = 0, godina = 0;
+                bool[] issucess = new bool[6];
                 double rezultat = 0.0;
+                try { delovi2 = delovi[5].Split('-'); }
+                catch(IndexOutOfRangeException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
                 string priprema = "";
-                Int32.TryParse(delovi[0], out sekund);
-                Int32.TryParse(delovi[1], out minut);
-                Int32.TryParse(delovi[2], out sat);
-                Int32.TryParse(delovi[3], out dan);
-                Int32.TryParse(delovi[4], out mesec);
-                string[] delovi2 = delovi[5].Split('-');
-                Int32.TryParse(delovi2[0], out godina);
-                Double.TryParse(delovi2[1], out rezultat);
+                try
+                {
+                    issucess[0] = Int32.TryParse(delovi[0], out sekund);
+                    issucess[1] = Int32.TryParse(delovi[1], out minut);
+                    issucess[2] = Int32.TryParse(delovi[2], out sat);
+                    issucess[3] = Int32.TryParse(delovi[3], out dan);
+                    issucess[4] = Int32.TryParse(delovi[4], out mesec);
+                    issucess[5] = Int32.TryParse(delovi2[0], out godina);
+                    foreach (var vrednost in issucess)
+                    {
+                        if (vrednost == false)
+                        {
+                            throw new FormatException("Format unetih brojeva nije validan i nije moguce konvertovati ga u DateTime.");
+                        }
+                    }
+                }
+                catch(FormatException e)
+                {
+                    Console.WriteLine(e.Message);
+                    throw;
+                }
+                try
+                {
+                    if (Double.TryParse(delovi2[1], out rezultat) == false)
+                    {
+                        throw new Exception("Format unetog broja je neispravan, nemoguce ga je konvertovati");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    throw;
+                }
+                try
+                {
+                    if (!(delovi2[2] == "MINIMALNI" || delovi2[2] == "PROSECNI" || delovi2[2] == "MAKSIMALNI"))
+                    {
+                        throw new Exception("Format unete vrste merenja je neispravan!");
+                    }
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    throw;
+                }
                 DateTime vreme = new DateTime(godina,mesec,dan,sat,minut,sekund);
                 priprema += vreme.ToString() + "\t" + rezultat.ToString() + "\t" + delovi2[2];
                 Console.WriteLine(priprema);

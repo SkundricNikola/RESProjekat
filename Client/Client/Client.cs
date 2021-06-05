@@ -15,48 +15,56 @@ namespace Client
             Console.WriteLine("Welcome to the client application, you will be connected shortly...");
             Informer i = new Informer();
             Int32 port = 13000;
-            TcpClient client = new TcpClient("127.0.0.1", port);
-            NetworkStream stream = client.GetStream();
-            string poruka = "";
-            while (true)
+            try
             {
-                poruka = i.AskClient();
-                if (poruka == "exit")
+                TcpClient client = new TcpClient("127.0.0.1", port);
+                NetworkStream stream = client.GetStream();
+                string poruka = "";
+                while (true)
                 {
-                    break;
-                }
-                Byte[] data = System.Text.Encoding.ASCII.GetBytes(poruka);
-                stream.Write(data, 0, data.Length);
+                    poruka = i.AskClient();
+                    if (poruka == "exit")
+                    {
+                        break;
+                    }
+                    Byte[] data = System.Text.Encoding.ASCII.GetBytes(poruka);
+                    stream.Write(data, 0, data.Length);
 
-                Console.WriteLine("\n----------------------------------------------------------\n");
-                Console.WriteLine("----------------PORUKA USPESNO POSLATA!-------------------");
-                Console.WriteLine("\n----------------------------------------------------------\n");
-                data = new Byte[256];
+                    Console.WriteLine("\n----------------------------------------------------------\n");
+                    Console.WriteLine("----------------PORUKA USPESNO POSLATA!-------------------");
+                    Console.WriteLine("\n----------------------------------------------------------\n");
+                    data = new Byte[256];
 
-                // String to store the response ASCII representation.
-                String responseData = String.Empty;
+                    // String to store the response ASCII representation.
+                    String responseData = String.Empty;
 
-                // Read the first batch of the TcpServer response bytes.
-                Int32 bytes = stream.Read(data, 0, data.Length);
-                responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                //ODGOVOR NA PRVU PORUKU
-                if(responseData == "WRITTEN")
-                {
-                    i.PrvaPorukaUspesna();
+                    // Read the first batch of the TcpServer response bytes.
+                    Int32 bytes = stream.Read(data, 0, data.Length);
+                    responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                    //ODGOVOR NA PRVU PORUKU
+                    if (responseData == "WRITTEN")
+                    {
+                        i.PrvaPorukaUspesna();
+                    }
+                    else if (responseData == "NOTWRITTEN")
+                    {
+                        i.PrvaPorukaNeuspesna();
+                    }
+                    else
+                    {
+                        i.PrintList(responseData);
+                    }
                 }
-                else if(responseData == "NOTWRITTEN")
-                {
-                    i.PrvaPorukaNeuspesna();
-                }
-                else 
-                {
-                    i.PrintList(responseData);
-                }
+                stream.Close();
+                client.Close();
+                Console.WriteLine("\n Press Enter to continue...");
+                Console.Read();
             }
-            stream.Close();
-            client.Close();
-            Console.WriteLine("\n Press Enter to continue...");
-            Console.Read();
+            catch(SocketException e)
+            {
+                Console.WriteLine("Socket Exception: " + e.Message);
+                throw;
+            }
         }
     }
 }
