@@ -45,6 +45,7 @@ namespace DataAccess
                         data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
                         Console.WriteLine("Received: {0}", data);
                         //5/1/2008 6:32:06 PM
+                        //Dodati if sa proverom posiljke od CalculationHandlera
                         string[] vreme = data.Split('/');
                         //vreme[0] - godina, vreme[1] - mesec, vreme[2] - dan, vreme[3] - sat, vreme[4] - minut, vreme[5] - sekund;
                         datum = new DateTime(Int32.Parse(vreme[0]), Int32.Parse(vreme[1]), Int32.Parse(vreme[2]), Int32.Parse(vreme[3]), Int32.Parse(vreme[4]), Int32.Parse(vreme[5]));
