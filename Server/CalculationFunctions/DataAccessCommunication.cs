@@ -29,6 +29,7 @@ namespace CalculationFunctions
 
         public static void SendMessage(ref List<ClientPackage> compack,DateTime dat)
         {
+            //dodati bool kao parametar SendMessage Metode da bi ona mogla raditi i slanje poacketOut-a
             IPEndPoint iPEndPoint = new IPEndPoint(iPAddress, port);
             TcpClient client = new TcpClient(iPEndPoint);
             NetworkStream ns = client.GetStream();
