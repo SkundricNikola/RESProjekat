@@ -49,16 +49,54 @@ namespace DataBasePackages
             string[] secondparse = parsed[5].Split('-');
             int godina, mesec, dan, sat, minut, sekund;
             double ptr;
-            Int32.TryParse(parsed[0], out sekund);
-            Int32.TryParse(parsed[1], out minut);
-            Int32.TryParse(parsed[2], out sat);
-            Int32.TryParse(parsed[3], out dan);
-            Int32.TryParse(parsed[4], out mesec);
-            Int32.TryParse(secondparse[0], out godina);
-            Double.TryParse(secondparse[2], out ptr);
+            bool[] tryparsesuccess = new bool[6];
+            bool trydoubleparse = new bool();
+            try
+            {
+                tryparsesuccess[0] = Int32.TryParse(parsed[0], out sekund);
+                tryparsesuccess[1] = Int32.TryParse(parsed[1], out minut);
+                tryparsesuccess[2] = Int32.TryParse(parsed[2], out sat);
+                tryparsesuccess[3] = Int32.TryParse(parsed[3], out dan);
+                tryparsesuccess[4] = Int32.TryParse(parsed[4], out mesec);
+                tryparsesuccess[5] = Int32.TryParse(secondparse[0], out godina);
+                trydoubleparse = Double.TryParse(secondparse[2], out ptr);
+                foreach (var tp in tryparsesuccess)
+                {
+                    if (tp == false)
+                    {
+                        throw new ArgumentNullException("Nemoguca konverzija u datum");
+                    }
+                }
+                if (sekund < 0 || sekund > 59 || minut < 0 || minut > 59 || sat < 0 || sat > 23 || dan < 1 || dan > 31 || mesec < 1 || mesec > 12 || godina < 1900 || godina > 2021)
+                {
+                    throw new ArgumentOutOfRangeException("Neispravne vrednosti parametara datuma");
+                }
+                if(trydoubleparse == false)
+                {
+                    throw new ArgumentNullException("Nemoguca konverzija u vrednost");
+                }
+                if(ptr < 0)
+                {
+                    throw new ArgumentOutOfRangeException("Nemoguca negativna potrosnja");
+                }
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
             datum = new DateTime(godina, mesec, dan, sat, minut, sekund);
             Potrosnja = ptr;
             region = secondparse[1];
+            if(region.Trim() == "")
+            {
+                throw new ArgumentNullException("Nije uneta vrednost za region");               
+            }
         }
     }
 }
