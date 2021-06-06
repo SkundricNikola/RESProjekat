@@ -176,7 +176,7 @@ namespace Client
             }
             return poruka;
         }
-        public void PrintList(string lista)
+        /*public void PrintList(string lista)
         {
             Console.WriteLine("---------------------------------------------------------------------");
             Console.WriteLine("DATUM\tVREDNOST PRORACUNA\tVRSTA PRORACUNA");
@@ -247,6 +247,6 @@ namespace Client
                 Console.WriteLine(priprema);
             }
             Console.WriteLine("---------------------------------------------------------------------");
-        }
+        }*/
     }
 }
