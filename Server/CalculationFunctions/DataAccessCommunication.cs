@@ -35,20 +35,11 @@ namespace CalculationFunctions
 
         public static void SendMessage(ref List<ClientPackage> compack,DateTime dat,bool slanje_paketa,CalculationPackage packetOut)
         {
-            Socket ss = null;
-            NetworkStream ns = new NetworkStream(ss);
+ 
             TcpClient client = new TcpClient();
-            try
-                {
-                    IPEndPoint iPEndPoint = new IPEndPoint(IPAddress, Port);
-                    client = new TcpClient(iPEndPoint);
-                    ns = client.GetStream();
-                }
-                catch (SocketException e)
-                {
-                    Console.WriteLine("Neuspela konekcija, poruka greske: " + e.Message);
-                    throw;
-                }
+            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress, Port);
+            client = new TcpClient(iPEndPoint);
+            NetworkStream ns = client.GetStream();
             string poruka = "", poruka2 = "";
             if (slanje_paketa)
             {
