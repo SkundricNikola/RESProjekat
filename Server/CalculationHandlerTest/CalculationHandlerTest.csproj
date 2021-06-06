@@ -57,6 +57,10 @@
       <Project>{ef51ef84-fe1c-45bf-910f-852deb25cc25}</Project>
       <Name>DataBasePackages</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DataBase\DataBase.csproj">
+      <Project>{3BAF5B2B-1300-444F-B099-145205E5C2CC}</Project>
+      <Name>DataBase</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

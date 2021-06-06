@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace DataBase
 {
-    class DataBaseHandler
+    public class DataBaseHandler
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             
                 var th1 = new Thread(() => DataAccessCommunication.ReceiveMessage());

@@ -64,7 +64,6 @@ namespace DataBase
             {
                 dac = new TcpListener(IPAddress.Parse("127.0.0.1"), 10011);
                 dac.Start();
-                dac.
                 Byte[] bytes = new Byte[256];
                 String data = null;
                 DateTime datumprovere;

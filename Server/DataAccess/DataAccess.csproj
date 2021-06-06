@@ -73,6 +73,10 @@
       <Project>{ef51ef84-fe1c-45bf-910f-852deb25cc25}</Project>
       <Name>DataBasePackages</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DataBase\DataBase.csproj">
+      <Project>{3baf5b2b-1300-444f-b099-145205e5c2cc}</Project>
+      <Name>DataBase</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

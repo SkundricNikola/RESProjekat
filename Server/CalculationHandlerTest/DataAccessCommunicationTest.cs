@@ -59,7 +59,7 @@ namespace CalculationHandlerTest
         [Test]
         public void DataAccessCommunication_SendMessage_Neispravan_NemaKonekcije()
         {
-            Assert.Throws<SocketException>(() => { DataBaseHandler. });
+            Assert.Throws<SocketException>(() => { DataBaseHandler.Main(new string[] { }); });
         }
     }
 }
