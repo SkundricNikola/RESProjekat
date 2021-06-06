@@ -52,7 +52,8 @@ namespace Client
                     }
                     else
                     {
-                        i.PrintList(responseData);
+                        //i.PrintList(responseData);
+                        Console.WriteLine(responseData);
                     }
                 }
                 stream.Close();
