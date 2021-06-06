@@ -27,35 +27,60 @@ namespace CalculationFunctions
 
         public static string ResponseData { get => responseData; set => responseData = value; }
 
-        public static void SendMessage(ref List<ClientPackage> compack,DateTime dat)
+        public static void SendMessage(ref List<ClientPackage> compack,DateTime dat,bool slanje_paketa,CalculationPackage packetOut)
         {
-            //dodati bool kao parametar SendMessage Metode da bi ona mogla raditi i slanje poacketOut-a
+            
             IPEndPoint iPEndPoint = new IPEndPoint(iPAddress, port);
             TcpClient client = new TcpClient(iPEndPoint);
             NetworkStream ns = client.GetStream();
             string poruka = "", poruka2 = "";
-            poruka = FormatirajDatum(dat);
-            //FORMATIRATI PORUKU KOJA SE SALJE (poruka)
-            Byte[] data = System.Text.Encoding.ASCII.GetBytes(poruka);
-            ns.Write(data, 0, data.Length);
-            //-----------------------------------------------
-            //PRIHVATANJE ODGOVORA
-            //-----------------------------------------------
-            data = new Byte[256];
-            // String to store the response ASCII representation.
-            // Read the first batch of the TcpServer response bytes.
-            Int32 bytes = ns.Read(data, 0, data.Length);
-            ResponseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-            poruka2 = data.ToString();
-            string[] temps = poruka2.Split(';');
-            foreach(string s in temps)
+            if (slanje_paketa)
             {
-                ClientPackage calc = new ClientPackage();
-                calc.FromString(s);
-                compack.Add(calc);
+                poruka = FormatirajDatum(dat);
+                //FORMATIRATI PORUKU KOJA SE SALJE (poruka)
+                Byte[] data = System.Text.Encoding.ASCII.GetBytes(poruka);
+                ns.Write(data, 0, data.Length);
+                //-----------------------------------------------
+                //PRIHVATANJE ODGOVORA
+                //-----------------------------------------------
+                data = new Byte[256];
+                // String to store the response ASCII representation.
+                // Read the first batch of the TcpServer response bytes.
+                Int32 bytes = ns.Read(data, 0, data.Length);
+                ResponseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                poruka2 = data.ToString();
+                string[] temps = poruka2.Split(';');
+                foreach (string s in temps)
+                {
+                    ClientPackage calc = new ClientPackage();
+                    calc.FromString(s);
+                    compack.Add(calc);
+                }
+                ns.Close();
+                client.Close();
             }
-            ns.Close();
-            client.Close();
+            else
+            {
+                poruka = "Kalkulacija;" + packetOut.ToString();
+                
+                //FORMATIRATI PORUKU JER SALJEMO KALKULACIJU NA UPIS (poruka)
+                Byte[] data = System.Text.Encoding.ASCII.GetBytes(poruka);
+                ns.Write(data, 0, data.Length);
+                //-----------------------------------------------
+                //PRIHVATANJE ODGOVORA
+                //-----------------------------------------------
+                data = new Byte[256];
+                // String to store the response ASCII representation.
+                // Read the first batch of the TcpServer response bytes.
+                Int32 bytes = ns.Read(data, 0, data.Length);
+                ResponseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                foreach(ClientPackage c in compack)
+                {
+                    compack.Remove(c);
+                }
+                ns.Close();
+                client.Close();
+            }
         }
 
     }
