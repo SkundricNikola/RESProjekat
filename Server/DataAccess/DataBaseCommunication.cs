@@ -5,12 +5,21 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DataAccess
 {
     public class DataBaseCommunication
     {
+
+        
+
+        public DataBaseCommunication()
+        {
+
+        }
+
         public static string FormatirajDatum(DateTime d)
         {
             string formatirano = d.Year + "/" + d.Month + "/" + d.Day + "/" + d.Hour + "/" + d.Minute + "/" + d.Second;
@@ -19,7 +28,7 @@ namespace DataAccess
         public static void SendInfoToInsert_Client(ClientPackage cp,ref bool dobar)
         {
             string responseData = "";
-            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10100);
+            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 20000);
             TcpClient client = new TcpClient(iPEndPoint);
             NetworkStream ns = client.GetStream();
 
@@ -40,7 +49,7 @@ namespace DataAccess
         public static void SendInfoToInsert_Calculation(CalculationPackage cp)
         {
             string responseData = "";
-            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10101);
+            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 20000);
             TcpClient client = new TcpClient(iPEndPoint);
             NetworkStream ns = client.GetStream();
 
@@ -57,7 +66,7 @@ namespace DataAccess
         public static void AskForList(DateTime datum,ref string odgovorporuka,bool ispis)
         {
             string responseData = "";
-            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10102);
+            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 20000);
             TcpClient client = new TcpClient(iPEndPoint);
             NetworkStream ns = client.GetStream();
             string poruka = "";
