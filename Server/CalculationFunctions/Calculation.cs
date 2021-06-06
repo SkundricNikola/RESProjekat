@@ -56,62 +56,64 @@ namespace CalculationFunctions
                         data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
                         Console.WriteLine("Received: {0}", data);
                         trigger = true;
-                    }
-                    if (trigger)
-                    {
-                        //primamo string formatiran unutar override metode toString klase ClientPackage
-                        List<double> listaMerenja = new List<double>();
-                        CalculationPackage paketOut = new CalculationPackage();
-                        List<ClientPackage> unosi_baza = c.RetrieveCalculations(false,paketOut);
+                        if (trigger)
+                        {
+                            //primamo string formatiran unutar override metode toString klase ClientPackage
+                            List<double> listaMerenja = new List<double>();
+                            CalculationPackage paketOut = new CalculationPackage();
+                            List<ClientPackage> unosi_baza = c.RetrieveCalculations(false, paketOut);
 
-                        List<string> unosi = new List<string>(unosi_baza.Count);
-                        foreach(ClientPackage cp in unosi_baza)
-                        {
-                            unosi.Add(cp.ToString());
+                            List<string> unosi = new List<string>(unosi_baza.Count);
+                            foreach (ClientPackage cp in unosi_baza)
+                            {
+                                unosi.Add(cp.ToString());
+                            }
+
+                            int k = 0;
+                            while (listaMerenja.Count != unosi.Count)
+                            {
+                                string[] delovi = unosi[k].Split('-');
+                                //radimo sa DateTime delom
+                                string[] datumpodaci = delovi[0].Split('/');
+                                int sekunde = 0, minuti = 0, sati = 0, dani = 0, meseci = 0, godine = 0;
+                                Int32.TryParse(datumpodaci[0], out sekunde);
+                                Int32.TryParse(datumpodaci[1], out minuti);
+                                Int32.TryParse(datumpodaci[2], out sati);
+                                Int32.TryParse(datumpodaci[3], out dani);
+                                Int32.TryParse(datumpodaci[4], out meseci);
+                                Int32.TryParse(datumpodaci[0], out godine);
+                                DateTime datum = new DateTime(godine, meseci, dani, sati, minuti, sekunde);
+                                paketOut.VremeProracuna = datum;
+                                //radimo sa vrednosti potrosnje
+                                double potrosnja = 0;
+                                Double.TryParse(delovi[2], out potrosnja);
+                                listaMerenja.Add(potrosnja);
+                                paketOut.PosVreme = DateTime.Now;
+                                if (data.Equals("min"))
+                                {
+                                    paketOut.Rezultat = listaMerenja.Min();
+                                    paketOut.VrstaProracuna = VrstaProracuna.MINIMALNI;
+                                }
+                                //Maximum
+                                if (data.Equals("max"))
+                                {
+                                    paketOut.Rezultat = listaMerenja.Max();
+                                    paketOut.VrstaProracuna = VrstaProracuna.MAKSIMALNI;
+                                }
+                                //Prosek
+                                if (data.Equals("average"))
+                                {
+                                    paketOut.Rezultat = listaMerenja.Average();
+                                    paketOut.VrstaProracuna = VrstaProracuna.PROSECNI;
+                                }
+                                k++;
+                                if (k == unosi.Count) { k = 0; }
+                            }
+                            //Slanje paketOut-a na upis u bazu podataka
+                            unosi_baza = c.RetrieveCalculations(true, paketOut);
+                            trigger = false;
                         }
-                        
-                        int k = 0;
-                        while (listaMerenja.Count != unosi.Count)
-                        {
-                            string[] delovi = unosi[k].Split('-');
-                            //radimo sa DateTime delom
-                            string[] datumpodaci = delovi[0].Split('/');
-                            int sekunde = 0, minuti = 0, sati = 0, dani = 0, meseci = 0, godine = 0;
-                            Int32.TryParse(datumpodaci[0], out sekunde);
-                            Int32.TryParse(datumpodaci[1], out minuti);
-                            Int32.TryParse(datumpodaci[2], out sati);
-                            Int32.TryParse(datumpodaci[3], out dani);
-                            Int32.TryParse(datumpodaci[4], out meseci);
-                            Int32.TryParse(datumpodaci[0], out godine);
-                            DateTime datum = new DateTime(godine, meseci, dani, sati, minuti, sekunde);
-                            paketOut.VremeProracuna = datum;
-                            //radimo sa vrednosti potrosnje
-                            double potrosnja = 0;
-                            Double.TryParse(delovi[2], out potrosnja);
-                            listaMerenja.Add(potrosnja);
-                            paketOut.PosVreme = DateTime.Now;
-                            if (data.Equals("min"))
-                            {
-                                paketOut.Rezultat = listaMerenja.Min();
-                                paketOut.VrstaProracuna = VrstaProracuna.MINIMALNI;
-                            }
-                            //Maximum
-                            if (data.Equals("max"))
-                            {
-                                paketOut.Rezultat = listaMerenja.Max();
-                                paketOut.VrstaProracuna = VrstaProracuna.MAKSIMALNI;
-                            }
-                            //Prosek
-                            if (data.Equals("average"))
-                            {
-                                paketOut.Rezultat = listaMerenja.Average();
-                                paketOut.VrstaProracuna = VrstaProracuna.PROSECNI;
-                            }
-                            k++;
-                            if(k == unosi.Count) { k = 0; }
-                        }
-                        //Slanje paketOut-a na upis u bazu podataka
-                        unosi_baza = c.RetrieveCalculations(true, paketOut);
+                    
                     }
                     
                 }
