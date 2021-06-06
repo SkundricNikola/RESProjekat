@@ -11,10 +11,11 @@ namespace DataBase
     {
         static void Main(string[] args)
         {
-            var th1 = new Thread(() => DataAccessCommunication.ReceiveMessage());
-            th1.IsBackground = true;
-            th1.Start();
-
+            
+                var th1 = new Thread(() => DataAccessCommunication.ReceiveMessage());
+                th1.IsBackground = true;
+                th1.Start();
+            
         }
     }
 }
