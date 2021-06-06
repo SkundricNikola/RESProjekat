@@ -12,13 +12,13 @@ namespace CalculationFunctions
 {
     class Calculation
     {
-        public List<ClientPackage> RetrieveCalculations()
+        public List<ClientPackage> RetrieveCalculations(bool slanje_paketa,CalculationPackage packetOut)
         {
             List<ClientPackage> kalkulacije = new List<ClientPackage>();
             Int32 portDataAccess = 10010;
             DataAccessCommunication dac = new DataAccessCommunication(portDataAccess, IPAddress.Parse("127.0.0.1"));
             DateTime datum = new DateTime();
-            var th1 = new Thread(() => DataAccessCommunication.SendMessage(ref kalkulacije, datum));
+            var th1 = new Thread(() => DataAccessCommunication.SendMessage(ref kalkulacije, datum,slanje_paketa,packetOut));
             th1.IsBackground = true;
             th1.Start();
             return kalkulacije;
@@ -62,13 +62,14 @@ namespace CalculationFunctions
                         //primamo string formatiran unutar override metode toString klase ClientPackage
                         List<double> listaMerenja = new List<double>();
                         CalculationPackage paketOut = new CalculationPackage();
-                        List<ClientPackage> unosi_baza = c.RetrieveCalculations();//moguce poredjenje i za nove unose zahtev
+                        List<ClientPackage> unosi_baza = c.RetrieveCalculations(false,paketOut);
 
                         List<string> unosi = new List<string>(unosi_baza.Count);
                         foreach(ClientPackage cp in unosi_baza)
                         {
                             unosi.Add(cp.ToString());
                         }
+                        
                         int k = 0;
                         while (listaMerenja.Count != unosi.Count)
                         {
@@ -109,8 +110,8 @@ namespace CalculationFunctions
                             k++;
                             if(k == unosi.Count) { k = 0; }
                         }
-
-                        //TO DO poslati DataAccess-u paketOut
+                        //Slanje paketOut-a na upis u bazu podataka
+                        unosi_baza = c.RetrieveCalculations(true, paketOut);
                     }
                     
                 }
