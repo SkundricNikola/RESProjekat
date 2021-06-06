@@ -34,6 +34,8 @@ namespace DataAccess
                 dobar = true;
             }
             else { dobar = false; }
+            ns.Close();
+            client.Close();
         }
         public static void SendInfoToInsert_Calculation(CalculationPackage cp)
         {
@@ -48,7 +50,9 @@ namespace DataAccess
 
             Int32 bytes = ns.Read(data, 0, data.Length);
             responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-            
+            ns.Close();
+            client.Close();
+
         }
         public static void AskForList(DateTime datum,ref string odgovorporuka,bool ispis)
         {
