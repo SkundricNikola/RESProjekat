@@ -14,65 +14,72 @@ namespace DataBase
     {
         private XmlDocument doc;
         private XmlTextWriter xtw;
+        private static int kreiranih = 0;
 
-        private static TcpListener dac;
+        private static TcpListener dac_t1;
+        private static TcpListener dac_t2;
+        private static TcpListener dac_t3;
         public DataAccessCommunication()
         {
-            doc = new XmlDocument();
-            xtw = new XmlTextWriter("DataBase", Encoding.UTF8);
-            xtw.WriteStartDocument();
-            xtw.WriteStartElement("Data");
-            xtw.WriteEndElement();
-            xtw.Close();
-            string id = "";
-            int i = 0;
-            while (i != 3)
-            {
-
-                FileStream lfile = new FileStream("DataBase", FileMode.Open);
-                doc.Load(lfile);
-                switch (i)
+            kreiranih++;
+            if(kreiranih == 1)
+            { 
+                doc = new XmlDocument();
+                xtw = new XmlTextWriter("DataBase", Encoding.UTF8);
+                xtw.WriteStartDocument();
+                xtw.WriteStartElement("Data");
+                xtw.WriteEndElement();
+                xtw.Close();
+                string id = "";
+                int i = 0;
+                while (i != 3)
                 {
-                    case 0:
-                        id = "MINIMALNI";
-                        break;
-                    case 1:
-                        id = "MAKSIMALNI";
-                        break;
-                    case 2:
-                        id = "PROSECNI";
-                        break;
-                    default:
-                        break;
+
+                    FileStream lfile = new FileStream("DataBase", FileMode.Open);
+                    doc.Load(lfile);
+                    switch (i)
+                    {
+                        case 0:
+                            id = "MINIMALNI";
+                            break;
+                        case 1:
+                            id = "MAKSIMALNI";
+                            break;
+                        case 2:
+                            id = "PROSECNI";
+                            break;
+                        default:
+                            break;
+                    }
+
+                    XmlElement cl = doc.CreateElement("Kalkulacija");
+                    cl.SetAttribute("Tip", id);
+                    XmlElement na = doc.CreateElement("Forma");
+                    XmlText natext = doc.CreateTextNode("");
+                    na.AppendChild(natext);
+                    cl.AppendChild(na);
+                    doc.DocumentElement.AppendChild(cl);
+                    lfile.Close();
+                    doc.Save("DataBase");
+                    i++;
                 }
-                
-                XmlElement cl = doc.CreateElement("Kalkulacija");
-                cl.SetAttribute("Tip", id);
-                XmlElement na = doc.CreateElement("Forma");
-                XmlText natext = doc.CreateTextNode("");
-                na.AppendChild(natext);
-                cl.AppendChild(na);
-                doc.DocumentElement.AppendChild(cl);
-                lfile.Close();
-                doc.Save("DataBase");
-                i++;
             }
         }
-        public static void ReceiveMessage()
+        //Thread t1
+        public static void ReceiveMessage_t1()
         {
             try
             {
-                dac = new TcpListener(IPAddress.Parse("127.0.0.1"), 10011);
-                dac.Start();
+                dac_t1 = new TcpListener(IPAddress.Parse("127.0.0.1"), 10100);
+                dac_t1.Start();
                 Byte[] bytes = new Byte[256];
                 String data = null;
-                //DateTime datumprovere;
                 DataAccessCommunication dataAccessCom = new DataAccessCommunication();
                 while (true)
                 {
                     Console.Write("Waiting for a connection... ");
                     // Perform a blocking call to accept requests.
-                    TcpClient client = dac.AcceptTcpClient();
+                    TcpClient client = dac_t1.AcceptTcpClient();
                     Console.WriteLine("Connected!");
                     data = null;
                     // Get a stream object for reading and writing
@@ -104,14 +111,115 @@ namespace DataBase
                             bytes = System.Text.Encoding.ASCII.GetBytes(dobar);
                             stream.Write(bytes, 0, bytes.Length);
                         }
-                        else if (tipa.Equals("Calculation_Update"))
+                        
+                    }
+                    // Shutdown and end connection
+                    client.Close();
+                }
+
+
+            }
+            catch (SocketException e)
+            {
+                Console.WriteLine("SocketException: {0}", e);
+            }
+            finally
+            {
+                // Stop listening for new clients.
+                dac_t1.Stop();
+            }
+        }
+
+        //Thread t2
+        public static void ReceiveMessage_t2()
+        {
+            try
+            {
+                dac_t2 = new TcpListener(IPAddress.Parse("127.0.0.1"), 10101);
+                dac_t2.Start();
+                Byte[] bytes = new Byte[256];
+                String data = null;
+                //DateTime datumprovere;
+                DataAccessCommunication dataAccessCom = new DataAccessCommunication();
+                while (true)
+                {
+                    Console.Write("Waiting for a connection... ");
+                    // Perform a blocking call to accept requests.
+                    TcpClient client = dac_t2.AcceptTcpClient();
+                    Console.WriteLine("Connected!");
+                    data = null;
+                    // Get a stream object for reading and writing
+                    NetworkStream stream = client.GetStream();
+                    int i;
+                    // Loop to receive all the data sent by the client.
+                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                    {
+                        // Translate data bytes to a ASCII string.
+                        data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
+                        Console.WriteLine("Received: {0}", data);
+                        string[] tip = data.Split(';');
+                        string tipa = "";
+                        tipa = tip[0];
+                        if (tipa.Equals("Calculation_Update"))
                         {
-                           dataAccessCom.UpdateDataBaseElement(tip[1]);
+                            dataAccessCom.UpdateDataBaseElement(tip[1]);
                         }
-                        else if(tipa.Equals("Read_Calculation"))
+
+                        string dobar = "Update done";
+                        bytes = System.Text.Encoding.ASCII.GetBytes(dobar);
+                        stream.Write(bytes, 0, bytes.Length);
+                    }
+                    // Shutdown and end connection
+                    client.Close();
+                }
+
+
+            }
+            catch (SocketException e)
+            {
+                Console.WriteLine("SocketException: {0}", e);
+            }
+            finally
+            {
+                // Stop listening for new clients.
+                dac_t2.Stop();
+            }
+        }
+        //Thread t3
+
+        public static void ReceiveMessage_t3()
+        {
+            try
+            {
+                dac_t3 = new TcpListener(IPAddress.Parse("127.0.0.1"), 10102);
+                dac_t3.Start();
+                Byte[] bytes = new Byte[256];
+                String data = null;
+                //DateTime datumprovere;
+                DataAccessCommunication dataAccessCom = new DataAccessCommunication();
+                while (true)
+                {
+                    Console.Write("Waiting for a connection... ");
+                    // Perform a blocking call to accept requests.
+                    TcpClient client = dac_t3.AcceptTcpClient();
+                    Console.WriteLine("Connected!");
+                    data = null;
+                    // Get a stream object for reading and writing
+                    NetworkStream stream = client.GetStream();
+                    int i;
+                    // Loop to receive all the data sent by the client.
+                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                    {
+                        // Translate data bytes to a ASCII string.
+                        data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
+                        Console.WriteLine("Received: {0}", data);
+                        string[] tip = data.Split(';');
+                        string tipa = "";
+                        tipa = tip[0];
+                        if (tipa.Equals("Read_Calculation"))
                         {
                             //DATA ACCESS PITA ZA LISTU TAKO STO SALJE DATUM
-                            
+
                             bytes = System.Text.Encoding.ASCII.GetBytes(dataAccessCom.ReadDataBaseElement(tip[1], false));
                             stream.Write(bytes, 0, bytes.Length);
                         }
@@ -134,7 +242,7 @@ namespace DataBase
             finally
             {
                 // Stop listening for new clients.
-                dac.Stop();
+                dac_t3.Stop();
             }
         }
 
