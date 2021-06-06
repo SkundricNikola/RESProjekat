@@ -17,9 +17,9 @@ namespace DataBase
         private XmlTextWriter xtw;
         private static int kreiranih = 0;
 
-        private static TcpListener dac_t1;
+        //private static TcpListener dac_t1;
         private static TcpListener dac_t2;
-        private static TcpListener dac_t3;
+        //private static TcpListener dac_t3;
         public DataAccessCommunication()
         {
             kreiranih++;
@@ -67,11 +67,11 @@ namespace DataBase
             }
         }
         //Thread t1
-        public static void ReceiveMessage_t1()
+        /*public static void ReceiveMessage_t1()
         {
             try
             {
-                dac_t1 = new TcpListener(IPAddress.Parse("127.0.0.1"), 10100);
+                dac_t1 = new TcpListener(IPAddress.Parse("127.0.0.1"), 20050);
                 dac_t1.Start();
                 Byte[] bytes = new Byte[256];
                 String data = null;
@@ -129,14 +129,14 @@ namespace DataBase
                 // Stop listening for new clients.
                 dac_t1.Stop();
             }
-        }
+        }*/
 
         //Thread t2
         public static void ReceiveMessage_t2()
         {
             try
             {
-                dac_t2 = new TcpListener(IPAddress.Parse("127.0.0.1"), 10101);
+                dac_t2 = new TcpListener(IPAddress.Parse("127.0.0.1"), 20000);
                 dac_t2.Start();
                 Byte[] bytes = new Byte[256];
                 String data = null;
@@ -160,13 +160,44 @@ namespace DataBase
                         Console.WriteLine("Received: {0}", data);
                         string[] tip = data.Split(';');
                         string tipa = "";
+                        string dobar = "";
                         tipa = tip[0];
-                        if (tipa.Equals("Calculation_Update"))
+                        if (tipa.Equals("Client_Insert"))
+                        {
+                            bool done = dataAccessCom.CreateNewDataBaseElement(tip[1]);
+                            if (done)
+                            {
+                                dobar = "true";
+
+                            }
+                            else
+                            {
+                                dobar = "false";
+                            }
+
+                            bytes = System.Text.Encoding.ASCII.GetBytes(dobar);
+                            stream.Write(bytes, 0, bytes.Length);
+                            continue;
+                        }
+                        else if (tipa.Equals("Calculation_Update"))
                         {
                             dataAccessCom.UpdateDataBaseElement(tip[1]);
+                        }else if (tipa.Equals("Read_Calculation"))
+                        {
+                            //DATA ACCESS PITA ZA LISTU TAKO STO SALJE DATUM
+
+                            bytes = System.Text.Encoding.ASCII.GetBytes(dataAccessCom.ReadDataBaseElement(tip[1], false));
+                            stream.Write(bytes, 0, bytes.Length);
+                            continue;
+                        }
+                        else//Read_Client
+                        {
+                            bytes = System.Text.Encoding.ASCII.GetBytes(dataAccessCom.ReadDataBaseElement(tip[1], true));
+                            stream.Write(bytes, 0, bytes.Length);
+                            continue;
                         }
 
-                        string dobar = "Update done";
+                        dobar = "Update done";
                         bytes = System.Text.Encoding.ASCII.GetBytes(dobar);
                         stream.Write(bytes, 0, bytes.Length);
                     }
@@ -187,12 +218,12 @@ namespace DataBase
             }
         }
         //Thread t3
-
+        /*
         public static void ReceiveMessage_t3()
         {
             try
             {
-                dac_t3 = new TcpListener(IPAddress.Parse("127.0.0.1"), 10102);
+                dac_t3 = new TcpListener(IPAddress.Parse("127.0.0.1"), 20100);
                 dac_t3.Start();
                 Byte[] bytes = new Byte[256];
                 String data = null;
@@ -245,7 +276,7 @@ namespace DataBase
                 // Stop listening for new clients.
                 dac_t3.Stop();
             }
-        }
+        }*/
 
         public bool CreateNewDataBaseElement(string format)
         {
