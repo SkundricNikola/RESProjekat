@@ -44,18 +44,33 @@ namespace DataAccess
                         // Translate data bytes to a ASCII string.
                         data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
                         Console.WriteLine("Received: {0}", data);
-                        //5/1/2008 6:32:06 PM
-                        //Dodati if sa proverom posiljke od CalculationHandlera
-                        string[] vreme = data.Split('/');
-                        //vreme[0] - godina, vreme[1] - mesec, vreme[2] - dan, vreme[3] - sat, vreme[4] - minut, vreme[5] - sekund;
-                        datum = new DateTime(Int32.Parse(vreme[0]), Int32.Parse(vreme[1]), Int32.Parse(vreme[2]), Int32.Parse(vreme[3]), Int32.Parse(vreme[4]), Int32.Parse(vreme[5]));
-                        string odgovor = "";
-                        //IZDVOJEN DATUM, OVDE TREBA DA SE POZIVA FUNKCIJA KOJA CE DA RETRIEVE LISTU PO OVOM DATUMU
-                        var t1 = new Thread(() => DataBaseCommunication.AskForList(datum, ref odgovor, false));
-                        t1.Start();
-                        //VRACANJE LISTE PRETABANE U STRING
-                        bytes = System.Text.Encoding.ASCII.GetBytes(odgovor);
-                        stream.Write(bytes, 0, bytes.Length);
+                        string[] provera = data.Split(';');
+                        if (provera[0].Equals("Kalkulacija"))
+                        {
+                            CalculationPackage cp = new CalculationPackage();
+                            cp.FromString(provera[1]);
+                            var t1 = new Thread(() => DataBaseCommunication.SendInfoToInsert_Calculation(cp));
+                            t1.Start();
+
+                            string odgovor = "Dodato";
+                            bytes = System.Text.Encoding.ASCII.GetBytes(odgovor);
+                            stream.Write(bytes, 0, bytes.Length);
+                        }
+                        else
+                        {
+                            //5/1/2008 6:32:06 PM
+                            //Dodati if sa proverom posiljke od CalculationHandlera
+                            string[] vreme = data.Split('/');
+                            //vreme[0] - godina, vreme[1] - mesec, vreme[2] - dan, vreme[3] - sat, vreme[4] - minut, vreme[5] - sekund;
+                            datum = new DateTime(Int32.Parse(vreme[0]), Int32.Parse(vreme[1]), Int32.Parse(vreme[2]), Int32.Parse(vreme[3]), Int32.Parse(vreme[4]), Int32.Parse(vreme[5]));
+                            string odgovor = "";
+                            //IZDVOJEN DATUM, OVDE TREBA DA SE POZIVA FUNKCIJA KOJA CE DA RETRIEVE LISTU PO OVOM DATUMU
+                            var t1 = new Thread(() => DataBaseCommunication.AskForList(datum, ref odgovor, false));
+                            t1.Start();
+                            //VRACANJE LISTE PRETABANE U STRING
+                            bytes = System.Text.Encoding.ASCII.GetBytes(odgovor);
+                            stream.Write(bytes, 0, bytes.Length);
+                        }
                     }
                     // Shutdown and end connection
                     client.Close();
