@@ -13,7 +13,7 @@ namespace DataBase
         {
             
                 var th1 = new Thread(() => DataAccessCommunication.ReceiveMessage());
-                th1.IsBackground = true;
+                //th1.IsBackground = true;
                 th1.Start();
             
         }
