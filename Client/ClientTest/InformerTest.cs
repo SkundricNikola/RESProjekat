@@ -63,7 +63,7 @@ namespace ClientTest
             Assert.Throws<FormatException>(() => { i.AskClient(); }, "Pogresan format! Nije unet broj!");
         }
 
-        [Test]
+        /*[Test]
         public void Provera_PrintList_Obrada_DobriPodaci()
         {
             Informer i = new Informer();
@@ -143,6 +143,6 @@ namespace ClientTest
             //{0}/{1}/{2}/{3}/{4}/{5}-{6}-{7}
             string lista = "06/a9/22/15/11/2020-250.12-MINIMALNI;55/15/9/25/09/2020-355.55-MALOSUTRA";
             Assert.Throws<FormatException>(() => i.PrintList(lista), "Format unete vrste merenja je neispravan!");
-        }
+        }*/
     }
 }
