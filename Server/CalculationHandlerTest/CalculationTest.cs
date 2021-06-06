@@ -34,7 +34,6 @@ namespace CalculationHandlerTest
 
         public void Calculation_RetrieveCalculations_Ispravan()
         {
-
             List<ClientPackage> checklist = ch.RetrieveCalculations(true, calcPack);
             Assert.AreEqual(checklist, ispravnalista);
         }

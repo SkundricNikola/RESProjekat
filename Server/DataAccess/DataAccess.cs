@@ -44,7 +44,7 @@ namespace DataAccess
             double vrednostpotrosnje;
             ClientPackage clientPackage = new ClientPackage();
             TcpListener server = null;
-            List<CalculationPackage> lista;
+            //List<CalculationPackage> lista;
             try
             {
                 Int32 port = 13000;

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{85A851C0-5293-4E62-BD12-D33B209DAC39}</ProjectGuid>
+    <ProjectGuid>{395970E8-8C42-47B0-AA84-9C0A349EE521}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CalculationHandlerTest</RootNamespace>
-    <AssemblyName>CalculationHandlerTest</AssemblyName>
+    <RootNamespace>DataBaseTest</RootNamespace>
+    <AssemblyName>DataBaseTest</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,24 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Castle.Core.4.4.0\lib\net45\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Moq, Version=4.16.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moq.4.16.1\lib\net45\Moq.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework, Version=2.7.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.2.7.1\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -57,25 +44,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CalculationTest.cs" />
     <Compile Include="DataAccessCommunicationTest.cs" />
+    <Compile Include="DataBaseHandlerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CalculationFunctions\CalculationHandler.csproj">
-      <Project>{15d80812-6b78-4eaf-af7f-c0b562673195}</Project>
-      <Name>CalculationHandler</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
-      <Project>{c68f15e6-7297-422c-8b24-55f7fd92fac6}</Project>
-      <Name>DataAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DataBasePackages\DataBasePackages.csproj">
-      <Project>{ef51ef84-fe1c-45bf-910f-852deb25cc25}</Project>
-      <Name>DataBasePackages</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DataBase\DataBase.csproj">
-      <Project>{3BAF5B2B-1300-444F-B099-145205E5C2CC}</Project>
+      <Project>{3baf5b2b-1300-444f-b099-145205e5c2cc}</Project>
       <Name>DataBase</Name>
     </ProjectReference>
   </ItemGroup>

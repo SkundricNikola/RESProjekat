@@ -35,19 +35,20 @@ namespace CalculationFunctions
 
         public static void SendMessage(ref List<ClientPackage> compack,DateTime dat,bool slanje_paketa,CalculationPackage packetOut)
         {
-            NetworkStream ns;
+            Socket ss = null;
+            NetworkStream ns = new NetworkStream(ss);
             TcpClient client = new TcpClient();
             try
-            {
-                IPEndPoint iPEndPoint = new IPEndPoint(IPAddress, Port);
-                client = new TcpClient(iPEndPoint);
-                ns = client.GetStream();
-            }
-            catch(SocketException e)
-            {
-                Console.WriteLine("Neuspela konekcija, poruka greske: " + e.Message);
-                throw;
-            }
+                {
+                    IPEndPoint iPEndPoint = new IPEndPoint(IPAddress, Port);
+                    client = new TcpClient(iPEndPoint);
+                    ns = client.GetStream();
+                }
+                catch (SocketException e)
+                {
+                    Console.WriteLine("Neuspela konekcija, poruka greske: " + e.Message);
+                    throw;
+                }
             string poruka = "", poruka2 = "";
             if (slanje_paketa)
             {
@@ -96,6 +97,7 @@ namespace CalculationFunctions
                 ns.Close();
                 client.Close();
             }
+            Console.WriteLine("Poruka uspesno poslata");
         }
 
     }

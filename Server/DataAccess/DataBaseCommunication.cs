@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    class DataBaseCommunication
+    public class DataBaseCommunication
     {
-        private static string FormatirajDatum(DateTime d)
+        public static string FormatirajDatum(DateTime d)
         {
             string formatirano = d.Year + "/" + d.Month + "/" + d.Day + "/" + d.Hour + "/" + d.Minute + "/" + d.Second;
             return formatirano;

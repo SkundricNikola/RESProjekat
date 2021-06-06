@@ -10,7 +10,7 @@ using System.IO;
 
 namespace DataBase
 {
-    class DataAccessCommunication
+    public class DataAccessCommunication
     {
         private XmlDocument doc;
         private XmlTextWriter xtw;
@@ -66,7 +66,7 @@ namespace DataBase
                 dac.Start();
                 Byte[] bytes = new Byte[256];
                 String data = null;
-                DateTime datumprovere;
+                //DateTime datumprovere;
                 DataAccessCommunication dataAccessCom = new DataAccessCommunication();
                 while (true)
                 {

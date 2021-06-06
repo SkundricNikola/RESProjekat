@@ -11,7 +11,7 @@ using System.Threading;
 namespace DataAccess
 {
     //SERVER/LISTENER
-    class CalculationHandlerCommunication
+    public class CalculationHandlerCommunication
     {
         static TcpListener clh;
         public CalculationHandlerCommunication()
