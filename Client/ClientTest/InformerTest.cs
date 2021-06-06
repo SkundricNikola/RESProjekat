@@ -13,6 +13,46 @@ namespace ClientTest
     class InformerTest
     {
         [Test]
+
+        public void Provera_PrvaPorukaUspesna_Ispravno()
+        {
+            Informer i = new Informer();
+            string teststring = string.Format("-----------------------------------------------------{0}" +
+                                             "\tPODACI USPESNO UPISANI U BAZU PODATAKA{0}" +
+                                             "-----------------------------------------------------\r\n", Environment.NewLine);
+            var output = new StringWriter();
+            Console.SetOut(output);
+            i.PrvaPorukaUspesna();
+            Assert.That(output.ToString(), Is.EqualTo(teststring));
+        }
+        [Test]
+        public void Provera_PrvaPorukaNeuspesna_Ispravno()
+        {
+            Informer i = new Informer();
+            string teststring = string.Format("-----------------------------------------------------{0}" +
+                                             "\tUPISIVANJE PODATAKA U BAZU NIJE USPELO{0}" +
+                                             "\tMOLIMO POKUSAJTE PONOVO{0}" + 
+                                             "-----------------------------------------------------\r\n", Environment.NewLine);
+            var output = new StringWriter();
+            Console.SetOut(output);
+            i.PrvaPorukaNeuspesna();
+            Assert.That(output.ToString(), Is.EqualTo(teststring));
+        }
+        [Test]
+        public void Provera_ShowOptions_Ispravno()
+        {
+            Informer i = new Informer();
+            string teststring = string.Format("Please type in the number of the operation you would like to conduct:{0}" +
+                                             "1 - Write the usage of electric energy for certain region{0}" +
+                                             "2 - Print all the function calculations{0}" +
+                                             "IZADJI - Napustanje programa\r\n", Environment.NewLine);
+            var output = new StringWriter();
+            Console.SetOut(output);
+            i.ShowOptions();
+            Assert.That(output.ToString(), Is.EqualTo(teststring));
+        }
+
+        [Test]
         public void Provera_AskClient_UnosPodataka_DobarDijalog()
         {
             Informer i = new Informer();
@@ -21,6 +61,41 @@ namespace ClientTest
             Console.SetIn(input);
             Assert.AreEqual(teststring,i.AskClient());
         }
+
+        [Test]
+        public void Provera_AskClient_UnosPodataka_Drugi_DobarDijalog()
+        {
+            Informer i = new Informer();
+            string teststring = string.Format("2;25/2/2020");
+            var input = new StringReader("2\n25/2/2020");
+            Console.SetIn(input);
+            Assert.AreEqual(teststring, i.AskClient());
+        }
+        [Test]
+        public void Provera_AskClient_UnosPodataka_Drugi_LosFormatDatuma()
+        {
+            Informer i = new Informer();
+            var input = new StringReader("2\n25/2020");
+            Console.SetIn(input);
+            Assert.Throws<ArgumentException>(() => i.AskClient());
+        }
+        [Test]
+        public void Provera_AskClient_UnosPodataka_Drugi_NemogucaKonverzijaDatuma()
+        {
+            Informer i = new Informer();
+            var input = new StringReader("2\n25/ssx/2020");
+            Console.SetIn(input);
+            Assert.Throws<ArgumentException>(() => i.AskClient());
+        }
+        [Test]
+        public void Provera_AskClient_UnosPodataka_Drugi_BrojeviVanOpsegaZaDatum()
+        {
+            Informer i = new Informer();
+            var input = new StringReader("2\n25/99/2020");
+            Console.SetIn(input);
+            Assert.Throws<ArgumentOutOfRangeException>(() => i.AskClient());
+        }
+
         [Test]
         public void Provera_AskClient_UnosPodataka_LosRegion()
         {

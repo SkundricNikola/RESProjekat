@@ -9,7 +9,7 @@ using DataBasePackages;
 
 namespace CalculationFunctions
 {
-    class DataAccessCommunication
+    public class DataAccessCommunication
     {
         public static string FormatirajDatum(DateTime datum)
         {
@@ -21,18 +21,33 @@ namespace CalculationFunctions
         static String responseData;
         public DataAccessCommunication(int porta, IPAddress iPAddressa)
         {
-            port = porta;
-            iPAddress = iPAddressa;
+            if(porta < 0)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            Port = porta;
+            IPAddress = iPAddressa;
         }
 
         public static string ResponseData { get => responseData; set => responseData = value; }
+        public static int Port { get => port; set => port = value; }
+        public static IPAddress IPAddress { get => iPAddress; set => iPAddress = value; }
 
         public static void SendMessage(ref List<ClientPackage> compack,DateTime dat,bool slanje_paketa,CalculationPackage packetOut)
         {
-            
-            IPEndPoint iPEndPoint = new IPEndPoint(iPAddress, port);
-            TcpClient client = new TcpClient(iPEndPoint);
-            NetworkStream ns = client.GetStream();
+            NetworkStream ns;
+            TcpClient client = new TcpClient();
+            try
+            {
+                IPEndPoint iPEndPoint = new IPEndPoint(IPAddress, Port);
+                client = new TcpClient(iPEndPoint);
+                ns = client.GetStream();
+            }
+            catch(SocketException e)
+            {
+                Console.WriteLine("Neuspela konekcija, poruka greske: " + e.Message);
+                throw;
+            }
             string poruka = "", poruka2 = "";
             if (slanje_paketa)
             {

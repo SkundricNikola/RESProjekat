@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CalculationFunctions
 {
-    class Calculation
+    public class Calculation
     {
         public List<ClientPackage> RetrieveCalculations(bool slanje_paketa,CalculationPackage packetOut)
         {

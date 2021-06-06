@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBasePackages", "DataBas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBasePackagesTest", "DataBasePackagesTest\DataBasePackagesTest.csproj", "{9B59EC74-2E94-4F37-98B2-D6A1512B37DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculationHandlerTest", "CalculationHandlerTest\CalculationHandlerTest.csproj", "{85A851C0-5293-4E62-BD12-D33B209DAC39}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{9B59EC74-2E94-4F37-98B2-D6A1512B37DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B59EC74-2E94-4F37-98B2-D6A1512B37DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B59EC74-2E94-4F37-98B2-D6A1512B37DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85A851C0-5293-4E62-BD12-D33B209DAC39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85A851C0-5293-4E62-BD12-D33B209DAC39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85A851C0-5293-4E62-BD12-D33B209DAC39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85A851C0-5293-4E62-BD12-D33B209DAC39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

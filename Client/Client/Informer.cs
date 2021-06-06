@@ -147,29 +147,34 @@ namespace Client
             }
             else
             {
-                poruka += "2; ";
+                poruka += "2;";
                 do
                 {
                     Console.WriteLine("Unesite vreme za koje zelite da vidite potrosnju u formatu DD/MM/YYYY");
                     ninfo = Console.ReadLine();
                     string[] iscorrectformat = ninfo.Split('/');
-                    if (iscorrectformat.Length != 3)
+                    try
                     {
-                        Console.WriteLine("Pogresan format! Niste uneli neki parametar ili ste ih uneli previse.");
-                        continue;
+                        int dan = -1, mesec = -1, godina = -1;
+                        if (iscorrectformat.Length != 3)
+                        {
+                            throw new ArgumentException("Pogresan format! Niste uneli neki parametar ili ste ih uneli previse.");
+                        }
+                        else if(Int32.TryParse(iscorrectformat[0], out dan) == false || Int32.TryParse(iscorrectformat[1], out mesec) == false || Int32.TryParse(iscorrectformat[2], out godina) == false)
+                        {
+                            throw new ArgumentException("Pogresan format! Nije moguce pretvoriti neki od parametara u broj. ");
+                        }
+                        else if (dan > 31 || dan < 0 || mesec > 12 || mesec < 0 || godina > 2021 || godina < 2000)
+                        {
+                            throw new ArgumentOutOfRangeException("Pogresan format! Neki od podataka ima vrednost vecu/manju nego sto bi smeo da ima.");
+                        }
+                        else { iscorrect = true; }
                     }
-                    int dan = -1, mesec = -1, godina = -1;
-                    if (Int32.TryParse(iscorrectformat[0], out dan) == false || Int32.TryParse(iscorrectformat[1], out mesec) == false || Int32.TryParse(iscorrectformat[2], out godina) == false)
+                    catch(ArgumentException e)
                     {
-                        Console.WriteLine("Pogresan format! Nije moguce pretvoriti neki od parametara u broj. ");
-                        continue;
+                        Console.WriteLine(e.Message);
+                        throw;
                     }
-                    if (dan > 31 || dan < 0 || mesec > 12 || mesec < 0 || godina > 2021 || godina < 2000)
-                    {
-                        Console.WriteLine("Pogresan format! Neki od podataka ima vrednost vecu/manju nego sto bi smeo da ima.");
-                        continue;
-                    }
-                    iscorrect = true;
                 }
                 while (!iscorrect);
                 poruka += ninfo;
