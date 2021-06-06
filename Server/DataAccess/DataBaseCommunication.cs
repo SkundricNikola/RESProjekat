@@ -19,7 +19,7 @@ namespace DataAccess
         public static void SendInfoToInsert_Client(ClientPackage cp,ref bool dobar)
         {
             string responseData = "";
-            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10011);
+            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10100);
             TcpClient client = new TcpClient(iPEndPoint);
             NetworkStream ns = client.GetStream();
 
@@ -40,7 +40,7 @@ namespace DataAccess
         public static void SendInfoToInsert_Calculation(CalculationPackage cp)
         {
             string responseData = "";
-            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10011);
+            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10101);
             TcpClient client = new TcpClient(iPEndPoint);
             NetworkStream ns = client.GetStream();
 
@@ -57,7 +57,7 @@ namespace DataAccess
         public static void AskForList(DateTime datum,ref string odgovorporuka,bool ispis)
         {
             string responseData = "";
-            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10011);
+            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10102);
             TcpClient client = new TcpClient(iPEndPoint);
             NetworkStream ns = client.GetStream();
             string poruka = "";
